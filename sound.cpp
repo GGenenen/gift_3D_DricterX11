@@ -226,6 +226,13 @@ void UninitSound(void)
 //=============================================================================
 void PlaySound(int label)
 {
+#if _DEBUG&&TRUE
+	
+	return;
+
+#endif // _DEBUG&&TRUE
+
+
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;
 
