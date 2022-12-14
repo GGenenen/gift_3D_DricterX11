@@ -87,7 +87,7 @@ cbuffer CameraBuffer : register(b7)
 //=============================================================================
 // 頂点シェーダ
 //=============================================================================
-void VertexShaderPolygon( in  float4 inPosition		: POSITION0,
+void VertexShaderPolygon( in  float4 inPosition		: POSITION0,		//
 						  in  float4 inNormal		: NORMAL0,
 						  in  float4 inDiffuse		: COLOR0,
 						  in  float2 inTexCoord		: TEXCOORD0,
@@ -212,11 +212,12 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 	if (fuchi == 1)
 	{
 		float angle = dot(normalize(inWorldPos.xyz - Camera.xyz), normalize(inNormal));
-		//if ((angle < 0.5f)&&(angle > -0.5f))
-		if (angle > -0.3f)
+		if ((angle < 0.5f)&&(angle > -0.5f))
+		//if (angle > -0.3f)
 		{
-			outDiffuse.rb  = 1.0f;
-			outDiffuse.g = 0.0f;			
+			outDiffuse.r = 1.0f;
+			outDiffuse.g = 1.0f;
+			outDiffuse.b = 1.0f;
 		}
 	}
 }

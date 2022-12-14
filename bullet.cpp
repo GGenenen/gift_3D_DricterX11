@@ -275,7 +275,7 @@ int SetBullet(XMFLOAT3 pos, XMFLOAT3 rot)
 
 			nIdxBullet = nCntBullet;
 
-			PlaySound(SOUND_LABEL_SE_shot000);
+			//PlaySound(SOUND_LABEL_SE_shot000);
 
 			break;
 		}
