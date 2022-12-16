@@ -214,6 +214,8 @@ void DrawEnemy(void)
 
 		XMStoreFloat4x4(&g_Enemy[i].mtxWorld, mtxWorld);
 
+		// ‰æ‚è‚Ìİ’è
+		SetFuchi(1);
 
 		// ƒ‚ƒfƒ‹•`‰æ
 		DrawModel(&g_Enemy[i].model);
