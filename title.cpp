@@ -1,26 +1,22 @@
 //=============================================================================
 //
 // タイトル画面処理 [title.cpp]
-// Author : 
 //
 //=============================================================================
-#include "main.h"
-#include "renderer.h"
+#include "title.h"
 #include "input.h"
 #include "fade.h"
 #include "sound.h"
-#include "sprite.h"
-#include "title.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define TEXTURE_WIDTH				(SCREEN_WIDTH)	// 背景サイズ
 #define TEXTURE_HEIGHT				(SCREEN_HEIGHT)	// 
-#define TEXTURE_MAX					(3)				// テクスチャの数
+#define TEXTURE_MAX					(11)				// テクスチャの数
 
-#define TEXTURE_WIDTH_LOGO			(480)			// ロゴサイズ
-#define TEXTURE_HEIGHT_LOGO			(80)			// 
+#define CHECKMODE					(3)				// モードの数
+#define BACKGROUND					(4)				// BGの数
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -30,25 +26,29 @@
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-static ID3D11Buffer				*g_VertexBuffer = NULL;		// 頂点情報
-static ID3D11ShaderResourceView	*g_Texture[TEXTURE_MAX] = { NULL };	// テクスチャ情報
+static ID3D11Buffer* g_VertexBuffer = NULL;				// 頂点情報
+static ID3D11ShaderResourceView* g_Texture[TEXTURE_MAX] = { NULL };	// テクスチャ情報
 
-static char *g_TexturName[TEXTURE_MAX] = {
-	"data/TEXTURE/bg000.jpg",
-	"data/TEXTURE/title_logo.png",
-	"data/TEXTURE/effect000.jpg",
+static char* g_TexturName[TEXTURE_MAX] = {
+	"data/TEXTURE/bg001.png",
+	"data/TEXTURE/bg002.png",
+	"data/TEXTURE/bg003.png",
+	"data/TEXTURE/bg004.png",
+	"data/TEXTURE/newgame.png",
+	"data/TEXTURE/newgame_check.png",
+	"data/TEXTURE/loadgame.png",
+	"data/TEXTURE/loadgame_check.png",
+	"data/TEXTURE/quit.png",
+	"data/TEXTURE/quit_check.png",
+	"data/TEXTURE/title.png",
+
 };
 
+static BOOL					g_Load = FALSE;
+static TITLE				g_Title[BACKGROUND];
 
-static bool						g_Use;						// true:使っている  false:未使用
-static float					g_w, g_h;					// 幅と高さ
-static XMFLOAT3					g_Pos;						// ポリゴンの座標
-static int						g_TexNo;					// テクスチャ番号
 
-float	alpha;
-bool	flag_alpha;
-
-static BOOL						g_Load = FALSE;
+int checkmode = 0;
 
 
 //=============================================================================
@@ -56,7 +56,7 @@ static BOOL						g_Load = FALSE;
 //=============================================================================
 HRESULT InitTitle(void)
 {
-	ID3D11Device *pDevice = GetDevice();
+	ID3D11Device* pDevice = GetDevice();
 
 	//テクスチャ生成
 	for (int i = 0; i < TEXTURE_MAX; i++)
@@ -82,18 +82,13 @@ HRESULT InitTitle(void)
 
 
 	// 変数の初期化
-	g_Use   = true;
-	g_w     = TEXTURE_WIDTH;
-	g_h     = TEXTURE_HEIGHT;
-	g_Pos   = XMFLOAT3(g_w/2, g_h/2, 0.0f);
-	g_TexNo = 0;
-
-	alpha = 1.0f;
-	flag_alpha = true;
-
-	// BGM再生
-	PlaySound(SOUND_LABEL_BGM_sample000);
-
+	for (int i = 0; i < BACKGROUND; i++)
+	{
+		g_Title[i].w = TEXTURE_WIDTH * 1.6;
+		g_Title[i].h = TEXTURE_HEIGHT;
+		g_Title[i].pos = XMFLOAT3(TEXTURE_WIDTH / 2, TEXTURE_HEIGHT / 2, 0.0f);
+		g_Title[i].scrl = 0;
+	}
 	g_Load = TRUE;
 	return S_OK;
 }
@@ -128,49 +123,55 @@ void UninitTitle(void)
 //=============================================================================
 void UpdateTitle(void)
 {
+	g_Title[0].scrl += 0.002f;
+	g_Title[1].scrl += 0.0015f;
+	g_Title[2].scrl += 0.001f;
+	g_Title[3].scrl += 0.001f;
+
+	if (GetKeyboardTrigger(DIK_DOWN))
+	{
+		PlaySound(SOUND_LABEL_SE_button);
+		checkmode++;
+	}
+	else if (GetKeyboardTrigger(DIK_UP))
+	{
+		PlaySound(SOUND_LABEL_SE_button);
+		if (checkmode > 0)
+		{
+			checkmode--;
+		}
+		else
+		{
+			checkmode = CHECKMODE - 1;
+		}
+	}
+
+	checkmode %= CHECKMODE;
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{// Enter押したら、ステージを切り替える
-		SetFade(FADE_OUT, MODE_GAME);
-	}
-	// ゲームパッドで入力処理
-	else if (IsButtonTriggered(0, BUTTON_START))
-	{
-		SetFade(FADE_OUT, MODE_GAME);
-	}
-	else if (IsButtonTriggered(0, BUTTON_B))
-	{
-		SetFade(FADE_OUT, MODE_GAME);
-	}
-
-	if (flag_alpha == true)
-	{
-		alpha -= 0.02f;
-		if (alpha <= 0.0f)
+		PlaySound(SOUND_LABEL_SE_button);
+		switch (checkmode)
 		{
-			alpha = 0.0f;
-			flag_alpha = false;
+		case 0:
+			SetFade(FADE_OUT, MODE_TUTORIAL);
+			break;
+		case 1:
+			//SetLoadGame(TRUE);
+			SetFade(FADE_OUT, MODE_TUTORIAL);
+			break;
+		case 2:
+			exit(0);
+			break;
 		}
 	}
-	else
-	{
-		alpha += 0.02f;
-		if (alpha >= 1.0f)
-		{
-			alpha = 1.0f;
-			flag_alpha = true;
-		}
-	}
-
-
 
 
 
 
 #ifdef _DEBUG	// デバッグ情報を表示する
-	//char *str = GetDebugStr();
-	//sprintf(&str[strlen(str)], " PX:%.2f PY:%.2f", g_Pos.x, g_Pos.y);
-	
+	//PrintDebugProc("Player:↑ → ↓ ←　Space\n");
+
 #endif
 
 }
@@ -203,52 +204,112 @@ void DrawTitle(void)
 		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[0]);
 
 		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSprite(g_VertexBuffer, g_Pos.x, g_Pos.y, g_w, g_h, 0.0f, 0.0f, 1.0f, 1.0f);
+		SetSpriteColor(g_VertexBuffer,
+			g_Title[0].pos.x, g_Title[0].pos.y, g_Title[0].w, g_Title[0].h,
+			g_Title[0].scrl, 0.0f, 1.0f, 1.0f,
+			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		// ポリゴン描画
 		GetDeviceContext()->Draw(4, 0);
 	}
-
-	// タイトルのロゴを描画
+	// タイトルの背景を描画
 	{
 		// テクスチャ設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
 
 		// １枚のポリゴンの頂点とテクスチャ座標を設定
-	//	SetSprite(g_VertexBuffer, g_Pos.x, g_Pos.y, TEXTURE_WIDTH_LOGO, TEXTURE_HEIGHT_LOGO, 0.0f, 0.0f, 1.0f, 1.0f);
-		SetSpriteColor(g_VertexBuffer, g_Pos.x, g_Pos.y, TEXTURE_WIDTH_LOGO, TEXTURE_HEIGHT_LOGO, 0.0f, 0.0f, 1.0f, 1.0f,
-						XMFLOAT4(1.0f, 1.0f, 1.0f, alpha));
+		SetSpriteColor(g_VertexBuffer,
+			g_Title[1].pos.x, g_Title[1].pos.y, g_Title[1].w, g_Title[1].h,
+			g_Title[1].scrl, 0.0f, 1.0f, 1.0f,
+			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		// ポリゴン描画
+		GetDeviceContext()->Draw(4, 0);
+	}
+	// タイトルの背景を描画
+	{
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
+
+		// １枚のポリゴンの頂点とテクスチャ座標を設定
+		SetSpriteColor(g_VertexBuffer,
+			g_Title[2].pos.x, g_Title[2].pos.y, g_Title[2].w, g_Title[2].h,
+			g_Title[2].scrl, 0.0f, 1.0f, 1.0f,
+			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		// ポリゴン描画
+		GetDeviceContext()->Draw(4, 0);
+	}
+	// タイトルの背景を描画
+	{
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[3]);
+
+		// １枚のポリゴンの頂点とテクスチャ座標を設定
+		SetSpriteColor(g_VertexBuffer,
+			g_Title[3].pos.x, g_Title[3].pos.y, g_Title[3].w, g_Title[3].h,
+			g_Title[3].scrl, 0.0f, 1.0f, 1.0f,
+			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		// ポリゴン描画
 		GetDeviceContext()->Draw(4, 0);
 	}
 
-//	// 加減算のテスト
-//	SetBlendState(BLEND_MODE_ADD);		// 加算合成
-////	SetBlendState(BLEND_MODE_SUBTRACT);	// 減算合成
-//	for(int i=0; i<30; i++)
-//	{
-//		// テクスチャ設定
-//		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
-//
-//		// １枚のポリゴンの頂点とテクスチャ座標を設定
-//		float dx = 100.0f;
-//		float dy = 100.0f;
-//		float sx = (float)(rand() % 100);
-//		float sy = (float)(rand() % 100);
-//
-//
-//		SetSpriteColor(g_VertexBuffer, dx+sx, dy+sy, 50, 50, 0.0f, 0.0f, 1.0f, 1.0f,
-//			XMFLOAT4(0.3f, 0.3f, 1.0f, 0.5f));
-//
-//		// ポリゴン描画
-//		GetDeviceContext()->Draw(4, 0);
-//	}
-//	SetBlendState(BLEND_MODE_ALPHABLEND);	// 半透明処理を元に戻す
+	switch (checkmode)
+	{
+	case 0:
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[4]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 200.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[7]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 270.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[9]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 340.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		break;
+	case 1:
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[5]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 200.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[6]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 270.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[9]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 340.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		break;
+	case 2:
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[5]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 200.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[7]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 270.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[8]);
+		SetSpriteLeftTop(g_VertexBuffer, 650.0f, 340.0f, 300, 240, 0.0f, 0.0f, 1.0f, 1.0f);
+		GetDeviceContext()->Draw(4, 0);
+		break;
+	}
 
+	{
+		// テクスチャ設定
+		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[10]);
+		// １枚のポリゴンの頂点とテクスチャ座標を設定
+		SetSpriteLeftTop(g_VertexBuffer, 0.0f, 0, 960, 440, 0.0f, 0.0f, 1.0f, 1.0f);
+		// ポリゴン描画
+		GetDeviceContext()->Draw(4, 0);
+	}
 }
-
-
 
 
 
