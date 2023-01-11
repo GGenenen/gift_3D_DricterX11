@@ -184,39 +184,37 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 					break;
 
 					// スポットライト
-				case 3:
-						// ライトの方向
-						lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
+				//case 3:
+				//		// ライトの方向
+				//		lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
 
-						// ライトの法線
-						light = dot(lightDir, inNormal.xyz);
+				//		// ライトの法線
+				//		light = dot(lightDir, inNormal.xyz);
 
-						// ライトのカラー
-						tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+				//		// ライトのカラー
+				//		tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
 
-						// 距離により減衰
-						float distance1 = length(inWorldPos - Light.Position[i]);
-						float att1 = saturate((Light.Attenuation[i].x - distance1) / Light.Attenuation[i].x);
-						tempColor *= att1;
+				//		// 距離により減衰
+				//		float distance1 = length(inWorldPos - Light.Position[i]);
+				//		float att1 = saturate((Light.Attenuation[i].x - distance1) / Light.Attenuation[i].x);
+				//		tempColor *= att1;
 
-						// 角度により減衰
-						float4 lightToVertex = normalize(inWorldPos - Light.Position[i]);
-						float spotEffect = dot(lightToVertex, Light.Direction[i].xyz);
+				//		// 角度により減衰
+				//		float4 lightToVertex = normalize(inWorldPos - Light.Position[i]);
+				//		float spotEffect = dot(lightToVertex, Light.Direction[i].xyz);
 
-						if (spotEffect > Light.SpotCosCutoff[i])
-						{
-							tempColor *= saturate((spotEffect - Light.SpotCosCutoff[i]) / (1.0 - Light.SpotCosCutoff[i]));
-						}
+				//		if (spotEffect > Light.SpotCosCutoff[i])
+				//		{
+				//			tempColor *= saturate((spotEffect - Light.SpotCosCutoff[i]) / (1.0 - Light.SpotCosCutoff[i]));
+				//		}
 
-						break;
+				//		break;
+
+				default:
+					tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+					break;
 				}
-					else
-					{
-						tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-					}
-
 					outColor += tempColor;
-				}
 
 			}
 		}
