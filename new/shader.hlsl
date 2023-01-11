@@ -5,17 +5,17 @@
 //*****************************************************************************
 
 // マトリクスバッファ
-cbuffer WorldBuffer : register( b0 )
+cbuffer WorldBuffer : register(b0)
 {
 	matrix World;
 }
 
-cbuffer ViewBuffer : register( b1 )
+cbuffer ViewBuffer : register(b1)
 {
 	matrix View;
 }
 
-cbuffer ProjectionBuffer : register( b2 )
+cbuffer ProjectionBuffer : register(b2)
 {
 	matrix Projection;
 }
@@ -23,16 +23,16 @@ cbuffer ProjectionBuffer : register( b2 )
 // マテリアルバッファ
 struct MATERIAL
 {
-	float4		Ambient;
-	float4		Diffuse;
-	float4		Specular;
-	float4		Emission;
-	float		Shininess;
-	int			noTexSampling;
-	float		Dummy[2];//16byte境界用
+	float4		Ambient;		//周囲
+	float4		Diffuse;		//拡散
+	float4		Specular;		//反射
+	float4		Emission;		//放射
+	float		Shininess;		//輝き
+	int			noTexSampling;	//
+	float		Dummy[2];//16byte境界用（パディング）
 };
 
-cbuffer MaterialBuffer : register( b3 )
+cbuffer MaterialBuffer : register(b3)
 {
 	MATERIAL	Material;
 }
@@ -50,7 +50,7 @@ struct LIGHT
 	int			Dummy[3];//16byte境界用
 };
 
-cbuffer LightBuffer : register( b4 )
+cbuffer LightBuffer : register(b4)
 {
 	LIGHT		Light;
 }
@@ -64,7 +64,7 @@ struct FOG
 };
 
 // フォグ用バッファ
-cbuffer FogBuffer : register( b5 )
+cbuffer FogBuffer : register(b5)
 {
 	FOG			Fog;
 };
@@ -87,16 +87,16 @@ cbuffer CameraBuffer : register(b7)
 //=============================================================================
 // 頂点シェーダ
 //=============================================================================
-void VertexShaderPolygon( in  float4 inPosition		: POSITION0,
-						  in  float4 inNormal		: NORMAL0,
-						  in  float4 inDiffuse		: COLOR0,
-						  in  float2 inTexCoord		: TEXCOORD0,
+void VertexShaderPolygon(in  float4 inPosition		: POSITION0,
+	in  float4 inNormal : NORMAL0,
+	in  float4 inDiffuse : COLOR0,
+	in  float2 inTexCoord : TEXCOORD0,
 
-						  out float4 outPosition	: SV_POSITION,
-						  out float4 outNormal		: NORMAL0,
-						  out float2 outTexCoord	: TEXCOORD0,
-						  out float4 outDiffuse		: COLOR0,
-						  out float4 outWorldPos    : POSITION0)
+	out float4 outPosition : SV_POSITION,
+	out float4 outNormal : NORMAL0,
+	out float2 outTexCoord : TEXCOORD0,
+	out float4 outDiffuse : COLOR0,
+	out float4 outWorldPos : POSITION0)
 {
 	matrix wvp;
 	wvp = mul(World, View);
@@ -117,20 +117,20 @@ void VertexShaderPolygon( in  float4 inPosition		: POSITION0,
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-Texture2D		g_Texture : register( t0 );
-SamplerState	g_SamplerState : register( s0 );
+Texture2D		g_Texture : register(t0);
+SamplerState	g_SamplerState : register(s0);
 
 
 //=============================================================================
 // ピクセルシェーダ
 //=============================================================================
-void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
-						 in  float4 inNormal		: NORMAL0,
-						 in  float2 inTexCoord		: TEXCOORD0,
-						 in  float4 inDiffuse		: COLOR0,
-						 in  float4 inWorldPos      : POSITION0,
+void PixelShaderPolygon(in  float4 inPosition		: SV_POSITION,
+	in  float4 inNormal : NORMAL0,
+	in  float2 inTexCoord : TEXCOORD0,
+	in  float4 inDiffuse : COLOR0,
+	in  float4 inWorldPos : POSITION0,
 
-						 out float4 outDiffuse		: SV_Target )
+	out float4 outDiffuse : SV_Target)
 {
 	float4 color;
 
@@ -161,16 +161,17 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 
 			if (Light.Flags[i].y == 1)
 			{
-				if (Light.Flags[i].x == 1)
+				switch (Light.Flags[i].x)
 				{
+				case 1:
 					lightDir = normalize(Light.Direction[i].xyz);
 					light = dot(lightDir, inNormal.xyz);
 
 					light = 0.5 - 0.5 * light;
 					tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
-				}
-				else if (Light.Flags[i].x == 2)
-				{
+					break;
+
+				case 2:
 					lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
 					light = dot(lightDir, inNormal.xyz);
 
@@ -180,12 +181,39 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 
 					float att = saturate((Light.Attenuation[i].x - distance) / Light.Attenuation[i].x);
 					tempColor *= att;
-				}
-				else
-				{
-					tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-				}
+					break;
 
+					// スポットライト
+				//case 3:
+				//		// ライトの方向
+				//		lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
+
+				//		// ライトの法線
+				//		light = dot(lightDir, inNormal.xyz);
+
+				//		// ライトのカラー
+				//		tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+
+				//		// 距離により減衰
+				//		float distance1 = length(inWorldPos - Light.Position[i]);
+				//		float att1 = saturate((Light.Attenuation[i].x - distance1) / Light.Attenuation[i].x);
+				//		tempColor *= att1;
+
+				//		// 角度により減衰
+				//		float4 lightToVertex = normalize(inWorldPos - Light.Position[i]);
+				//		float spotEffect = dot(lightToVertex, Light.Direction[i].xyz);
+
+				//		if (spotEffect > Light.SpotCosCutoff[i])
+				//		{
+				//			tempColor *= saturate((spotEffect - Light.SpotCosCutoff[i]) / (1.0 - Light.SpotCosCutoff[i]));
+				//		}
+
+				//		break;
+
+				default:
+					tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+					break;
+				}
 				outColor += tempColor;
 			}
 		}
@@ -197,10 +225,10 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 	//フォグ
 	if (Fog.Enable == 1)
 	{
-		float z = inPosition.z*inPosition.w;
+		float z = inPosition.z * inPosition.w;
 		float f = (Fog.Distance.y - z) / (Fog.Distance.y - Fog.Distance.x);
 		f = saturate(f);
-		outDiffuse = f * color + (1 - f)*Fog.FogColor;
+		outDiffuse = f * color + (1 - f) * Fog.FogColor;
 		outDiffuse.a = color.a;
 	}
 	else
@@ -212,11 +240,16 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 	if (fuchi == 1)
 	{
 		float angle = dot(normalize(inWorldPos.xyz - Camera.xyz), normalize(inNormal));
-		//if ((angle < 0.5f)&&(angle > -0.5f))
-		if (angle > -0.3f)
+		if ((angle < 0.5f) && (angle > -0.5f))
+			//if (angle > -0.3f)
 		{
-			outDiffuse.rb  = 1.0f;
-			outDiffuse.g = 0.0f;			
+			outDiffuse.r = 1.0f;
+			outDiffuse.g = 1.0f;
+			outDiffuse.b = 1.0f;
 		}
 	}
+
+
+
 }
+

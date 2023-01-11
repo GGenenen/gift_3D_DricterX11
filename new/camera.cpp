@@ -1,6 +1,7 @@
 //=============================================================================
 //
 // カメラ処理 [camera.cpp]
+// Author : 
 //
 //=============================================================================
 #include "main.h"
@@ -10,10 +11,18 @@
 #include "player.h"
 #include "game.h"
 
-
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
+#define	POS_X_CAM			(0.0f)			// カメラの初期位置(X座標)
+#define	POS_Y_CAM			(50.0f)			// カメラの初期位置(Y座標)
+#define	POS_Z_CAM			(-140.0f)		// カメラの初期位置(Z座標)
+
+//#define	POS_X_CAM		(0.0f)			// カメラの初期位置(X座標)
+//#define	POS_Y_CAM		(200.0f)		// カメラの初期位置(Y座標)
+//#define	POS_Z_CAM		(-400.0f)		// カメラの初期位置(Z座標)
+
+
 #define	VIEW_ANGLE		(XMConvertToRadians(45.0f))						// ビュー平面の視野角
 #define	VIEW_ASPECT		((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比	
 #define	VIEW_NEAR_Z		(10.0f)											// ビュー平面のNearZ値
@@ -31,7 +40,7 @@ static int				g_ViewPortType = TYPE_FULL_SCREEN;
 
 float g_Camera_at_rot = 0.0f;
 
-XMFLOAT3 OnePerson = {8.0f,10.0f,8.0f };
+XMFLOAT3 OnePerson = { 8.0f,10.0f,8.0f };
 XMFLOAT3 ThirdPerson = { 70.0f,20.0f,70.0f };
 
 //人称フラグ true:三人称 false:一人称
@@ -42,13 +51,17 @@ bool ViewType = false;
 //=============================================================================
 void InitCamera(void)
 {
-	g_Camera.pos = { 0.0f, 0.0f, 0.0f };
+	//g_Camera.pos = { 0.0f, 0.0f, 0.0f };
+	g_Camera.pos = { POS_X_CAM, POS_Y_CAM, POS_Z_CAM };
 	g_Camera.at = { 0.0f, 0.0f, 0.0f };
 	g_Camera.up = { 0.0f, 1.0f, 0.0f };
 	g_Camera.rot = { 0.0f, 0.0f, 0.0f };
 
 	// 視点と注視点の距離を計算
-	g_Camera.len = 200.0f;
+	float vx, vz;
+	vx = g_Camera.pos.x - g_Camera.at.x;
+	vz = g_Camera.pos.z - g_Camera.at.z;
+	g_Camera.len = sqrtf(vx * vx + vz * vz);
 
 	// ビューポートタイプの初期化
 	g_ViewPortType = TYPE_FULL_SCREEN;
@@ -69,26 +82,105 @@ void UninitCamera(void)
 //=============================================================================
 void UpdateCamera(void)
 {
-	//マウスの移動命令
-	{
-		long diff_X = GetMousePosX() - SCREEN_CENTER_X; //diff_X > 0  右側  diff_X < 0  左側
-		long diff_Y = GetMousePosY() - SCREEN_CENTER_Y; //diff_Y > 0  下側  diff_Y < 0  上側
 
-		g_Camera.rot.y += XM_PI * diff_X * 0.005f;
+	if (GetKeyboardPress(DIK_Z))
+	{// 視点旋回「左」
+		g_Camera.rot.y += VALUE_ROTATE_CAMERA;
+		if (g_Camera.rot.y > XM_PI)
+		{
+			g_Camera.rot.y -= XM_PI * 2.0f;
+		}
 
-		if (g_Camera_at_rot <= XM_PI / 2 && g_Camera_at_rot >= -XM_PI / 4)
-		{
-			g_Camera_at_rot += XM_PI * diff_Y * 0.002f;
-		}
-		else if (g_Camera_at_rot > XM_PI / 2)
-		{
-			g_Camera_at_rot = XM_PI / 2;
-		}
-		else
-		{
-			g_Camera_at_rot = -XM_PI / 4;
-		}
+		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
 	}
+
+	if (GetKeyboardPress(DIK_C))
+	{// 視点旋回「右」
+		g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
+		if (g_Camera.rot.y < -XM_PI)
+		{
+			g_Camera.rot.y += XM_PI * 2.0f;
+		}
+
+		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+	}
+
+	if (GetKeyboardPress(DIK_Y))
+	{// 視点移動「上」
+		g_Camera.pos.y += VALUE_MOVE_CAMERA;
+	}
+
+	if (GetKeyboardPress(DIK_N))
+	{// 視点移動「下」
+		g_Camera.pos.y -= VALUE_MOVE_CAMERA;
+	}
+
+	if (GetKeyboardPress(DIK_Q))
+	{// 注視点旋回「左」
+		g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
+		if (g_Camera.rot.y < -XM_PI)
+		{
+			g_Camera.rot.y += XM_PI * 2.0f;
+		}
+
+		g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
+	}
+
+	if (GetKeyboardPress(DIK_E))
+	{// 注視点旋回「右」
+		g_Camera.rot.y += VALUE_ROTATE_CAMERA;
+		if (g_Camera.rot.y > XM_PI)
+		{
+			g_Camera.rot.y -= XM_PI * 2.0f;
+		}
+
+		g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
+	}
+
+	if (GetKeyboardPress(DIK_T))
+	{// 注視点移動「上」
+		g_Camera.at.y += VALUE_MOVE_CAMERA;
+	}
+
+	if (GetKeyboardPress(DIK_B))
+	{// 注視点移動「下」
+		g_Camera.at.y -= VALUE_MOVE_CAMERA;
+	}
+
+	if (GetKeyboardPress(DIK_U))
+	{// 近づく
+		g_Camera.len -= VALUE_MOVE_CAMERA;
+		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+	}
+
+	if (GetKeyboardPress(DIK_M))
+	{// 離れる
+		g_Camera.len += VALUE_MOVE_CAMERA;
+		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+	}
+
+#ifdef _DEBUG
+	// カメラを初期に戻す
+	if (GetKeyboardPress(DIK_R))
+	{
+		UninitCamera();
+		InitCamera();
+	}
+#endif
+
+
+
+#ifdef _DEBUG	// デバッグ情報を表示する
+	PrintDebugProc("Camera:ZC QE TB YN UM\n");
+#endif
+
+
 
 #ifdef _DEBUG
 	if (GetKeyboardTrigger(DIK_F3))
@@ -126,7 +218,6 @@ void UpdateCamera(void)
 #ifdef _DEBUG
 
 #endif
-
 }
 
 
@@ -240,12 +331,12 @@ int GetViewPortType(void)
 // カメラの視点と注視点をセット
 void SetCameraAT(XMFLOAT3 pos)
 {
-	// カメラの注視点を引数の座標にしてみる
+	// カメラの注視点をプレイヤーの座標にしてみる
 	g_Camera.at = pos;
 
-	//// カメラの視点をカメラのY軸回転に対応させている
-	//g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-	//g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+	// カメラの視点をカメラのY軸回転に対応させている
+	g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+	g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
 
 }
 

@@ -10,13 +10,14 @@
 #include "player.h"
 #include "shadow.h"
 #include "light.h"
+#include "bullet.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define	MODEL_PLAYER		"data/MODEL/player.obj"			// 読み込むモデル名
 
-#define	VALUE_MOVE			(0.7f)							// 移動量
+#define	VALUE_MOVE			(0.9f)							// 移動量
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// 回転量
 
 #define PLAYER_SHADOW_SIZE	(0.4f)							// 影の大きさ
@@ -32,6 +33,8 @@
 // グローバル変数
 //*****************************************************************************
 static PLAYER				g_Player;						// プレイヤー
+static CAMERA				g_Camera;						// プレイヤー
+
 
 
 //=============================================================================
@@ -94,7 +97,7 @@ void UpdatePlayer(void)
 
 		if (GetKeyboardTrigger(DIK_F))
 		{
-			PlayerLight->Enable = PlayerLight->Enable?false:true;
+			PlayerLight->Enable = PlayerLight->Enable ? false : true;
 		}
 		SetLightData(4, PlayerLight);
 
@@ -102,27 +105,56 @@ void UpdatePlayer(void)
 
 	CAMERA* cam = GetCamera();
 
-	// 移動させちゃう
-	if (GetKeyboardPress(DIK_LEFT) || GetKeyboardPress(DIK_A))
-	{	// 左へ移動
+	g_Player.spd *= 0.9f;
+
+	// 移動処理
+	if (GetKeyboardPress(DIK_A))
+	{
 		g_Player.spd = VALUE_MOVE;
+		g_Player.pos.x -= g_Player.spd;
 		g_Player.dir = XM_PI / 2;
 	}
-	if (GetKeyboardPress(DIK_RIGHT) || GetKeyboardPress(DIK_D))
-	{	// 右へ移動
+	if (GetKeyboardPress(DIK_D))
+	{
 		g_Player.spd = VALUE_MOVE;
+		g_Player.pos.x += g_Player.spd;
 		g_Player.dir = -XM_PI / 2;
 	}
-	if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_W))
-	{	// 上へ移動
+	if (GetKeyboardPress(DIK_W))
+	{
 		g_Player.spd = VALUE_MOVE;
+		g_Player.pos.z += g_Player.spd;
 		g_Player.dir = XM_PI;
 	}
-	if (GetKeyboardPress(DIK_DOWN) || GetKeyboardPress(DIK_S))
-	{	// 下へ移動
+	if (GetKeyboardPress(DIK_S))
+	{
 		g_Player.spd = VALUE_MOVE;
+		g_Player.pos.z -= g_Player.spd;
 		g_Player.dir = 0.0f;
 	}
+
+#ifdef _DEBUG
+	if (GetKeyboardPress(DIK_R))
+	{
+		g_Player.pos.z = g_Player.pos.x = 0.0f;
+		g_Player.rot.y = g_Player.dir = 0.0f;
+		g_Player.spd = 0.0f;
+	}
+#endif
+
+
+	//	// Key入力があったら移動処理する
+	if (g_Player.spd > 0.0f)
+	{
+		g_Player.rot.y = g_Player.dir + cam->rot.y;
+
+
+		// 入力のあった方向へプレイヤーを向かせて移動させる
+		g_Player.pos.x -= sinf(g_Player.rot.y) * g_Player.spd;
+		g_Player.pos.z -= cosf(g_Player.rot.y) * g_Player.spd;
+	}
+
+
 
 
 #ifdef _DEBUG
@@ -139,12 +171,21 @@ void UpdatePlayer(void)
 	if (g_Player.spd > 0.0f)
 	{
 		g_Player.rot.y = g_Player.dir + cam->rot.y;
-		
 
 		// 入力のあった方向へプレイヤーを向かせて移動させる
 		g_Player.pos.x -= sinf(g_Player.rot.y) * g_Player.spd;
 		g_Player.pos.z -= cosf(g_Player.rot.y) * g_Player.spd;
 	}
+
+
+	// 弾発射処理
+	if (GetKeyboardTrigger(DIK_SPACE))
+	{
+		//g_Player.dir = XM_PI;
+		g_Camera.rot.y = XM_PI;
+		SetBullet(g_Player.pos, g_Camera.rot );
+	}
+
 
 	// 影もプレイヤーの位置に合わせる
 	XMFLOAT3 pos = g_Player.pos;
@@ -152,21 +193,21 @@ void UpdatePlayer(void)
 	SetPositionShadow(g_Player.shadowIdx, pos);
 
 
-	g_Player.spd *= 0.5f;
+	g_Player.spd *= 0.8f;
 
 
-	//{	// ポイントライトのテスト
-	//	LIGHT *light = GetLightData(1);
-	//	XMFLOAT3 pos = g_Player.pos;
-	//	pos.y += 30.0f;
+	{	// ポイントライトのテスト
+		LIGHT *light = GetLightData(1);
+		XMFLOAT3 pos = g_Player.pos;
+		pos.y += 30.0f;
 
-	//	light->Position = pos;
-	//	light->Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	//	light->Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	//	light->Type = LIGHT_TYPE_POINT;
-	//	light->Enable = true;
-	//	SetLightData(1, light);
-	//}
+		light->Position = pos;
+		light->Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		light->Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		light->Type = LIGHT_TYPE_POINT;
+		light->Enable = true;
+		SetLightData(1, light);
+	}
 
 
 #ifdef _DEBUG	// デバッグ情報を表示する
@@ -221,6 +262,3 @@ PLAYER* GetPlayer(void)
 {
 	return &g_Player;
 }
-
-
-

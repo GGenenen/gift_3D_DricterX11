@@ -59,6 +59,33 @@ using namespace DirectX;
 #define	MAP_RIGHT		(MAP_W/2)
 
 
+// 補間用のデータ構造体を定義
+struct INTERPOLATION_DATA
+{
+	XMFLOAT3	pos;		// 頂点座標
+	XMFLOAT3	rot;		// 回転
+	XMFLOAT3	scl;		// 拡大縮小
+	float		frame;		// 実行フレーム数 ( dt = 1.0f/frame )
+};
+
+enum
+{
+	MODE_TITLE = 0,			// タイトル画面
+	MODE_TUTORIAL,			// ゲーム説明画面
+	MODE_GAME,				// ゲーム画面
+	MODE_RESULT,			// リザルト画面
+	MODE_MAX
+};
+
+
+enum
+{
+	GMODE_GAME = 0,			//一般ゲームモード
+	GMODE_SETTING,			//ゲーム設定
+	GMODE_MAX
+};
+
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************

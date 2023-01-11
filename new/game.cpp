@@ -26,6 +26,7 @@
 #include "title.h"
 #include "tree.h"
 #include "tutorial.h"
+#include "bullet.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -36,7 +37,7 @@
 // グローバル変数:
 //*****************************************************************************
 
-int Mode = MODE_TITLE;
+int Mode = MODE_GAME;
 
 int GameMode = GMODE_GAME;
 
@@ -74,6 +75,9 @@ void InitGame(void)
 	// 木を生やす
 	InitTree();
 
+	// 弾の初期化
+	InitBullet();
+
 	// ビルドの初期化
 	InitBuild();
 
@@ -94,6 +98,9 @@ void UninitGame(void)
 {
 	// ビルドの終了処理
 	UninitBuild();
+
+	// 弾の終了処理
+	UninitBullet();
 
 	// 木の終了処理
 	UninitTree();
@@ -152,6 +159,8 @@ void UpdateGame(void)
 		UpdateEnemy();
 		// 木の更新処理
 		UpdateTree();
+		// 弾の更新処理
+		UpdateBullet();
 		// 影の更新処理
 		UpdateShadow();
 		// 当たり判定
@@ -182,6 +191,8 @@ void DrawGame(void)
 		DrawShadow();
 		// プレイヤーの描画処理
 		DrawPlayer();
+		// 弾の描画処理
+		DrawBullet();
 		// エネミーの描画処理
 		DrawEnemy();
 		// 壁の描画処理
@@ -269,6 +280,9 @@ void SetMode(int mode)
 
 		// 木を生やす
 		InitTree();
+
+		// 弾の初期化
+		InitBullet();
 
 		// ビルドの初期化
 		InitBuild();

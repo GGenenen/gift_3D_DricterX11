@@ -215,7 +215,6 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 					break;
 				}
 					outColor += tempColor;
-
 			}
 		}
 
@@ -249,12 +248,6 @@ void PixelShaderPolygon( in  float4 inPosition		: SV_POSITION,
 			outDiffuse.b = 1.0f;
 		}
 	}
-
-
-
-
-
-
 
 
 
