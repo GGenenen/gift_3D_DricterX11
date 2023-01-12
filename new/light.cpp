@@ -26,7 +26,7 @@ static LIGHT	g_Light[LIGHT_MAX];		//ライトを制御するための配列で現在5(LIGHT_MAX)
 
 static FOG		g_Fog;					//霧（フォグ）の制御	
 
-static BOOL		g_FogEnable = FALSE;			//霧 ON/OFF
+static BOOL		g_FogEnable = 0;			//霧 ON/OFF
 
 int Lighting=0;
 float LightingF = 0;

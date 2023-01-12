@@ -18,7 +18,7 @@
 //*****************************************************************************
 #define	MODEL_PLAYER		"data/MODEL/player.obj"			// 読み込むモデル名
 
-#define	VALUE_MOVE			(0.9f)							// 移動量
+#define	VALUE_MOVE			(2.0f)							// 移動量
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// 回転量
 
 #define PLAYER_SHADOW_SIZE	(0.4f)							// 影の大きさ
@@ -216,25 +216,25 @@ void UpdatePlayer(void)
 
 	// MAP外チェック
 
-	//if (g_Player.pos.x < 0.0f)
-	//{
-	//	g_Player.pos.x = 0.0f;
-	//}
+	if (g_Player.pos.x < -1000.0f)
+	{
+		g_Player.pos.x = -1000.0f;
+	}
 
-	//if (g_Player.pos.x > bg->w)
-	//{
-	//	g_Player.pos.x = bg->w;
-	//}
+	if (g_Player.pos.x > 1000.0f)
+	{
+		g_Player.pos.x = 1000.0f;
+	}
 
-	//if (g_Player.pos.z < 0.0f)
-	//{
-	//	g_Player.pos.z = 0.0f;
-	//}
+	if (g_Player.pos.z > 1000.0f)
+	{
+		g_Player.pos.z = 1000.0f;
+	}
 
-	//if (g_Player.pos.z > bg->h)
-	//{
-	//	g_Player.pos.z = bg->h;
-	//}
+	if (g_Player.pos.z < -1000.0f)
+	{
+		g_Player.pos.z = -1000.0f;
+	}
 
 
 #ifdef _DEBUG	// デバッグ情報を表示する

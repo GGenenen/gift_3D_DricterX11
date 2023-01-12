@@ -18,9 +18,9 @@
 // マクロ定義
 //*****************************************************************************
 #define	MODEL_BULLET01		"data/MODEL/tomato.obj"			// 読み込むモデル名
-#define	MODEL_BULLET02		"data/MODEL/pizza.obj"			// 読み込むモデル名
-#define	MODEL_BULLET03		"data/MODEL/sushiEgg.obj"			// 読み込むモデル名
-#define	MODEL_BULLET04		"data/MODEL/eggCooked.obj"			// 読み込むモデル名
+#define	MODEL_BULLET02		"data/MODEL/pumpkin.obj"			// 読み込むモデル名
+#define	MODEL_BULLET03		"data/MODEL/pizza.obj"			// 読み込むモデル名
+#define	MODEL_BULLET04		"data/MODEL/burger.obj"			// 読み込むモデル名
 
 #define BULLET_MODEL_TYPE_1 1
 #define BULLET_MODEL_TYPE_2 2
