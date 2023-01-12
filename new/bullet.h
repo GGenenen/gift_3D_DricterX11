@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// 弾発射処理 [bullet.h]
+// モデル処理 [Bullet.h]
 // Author : 
 //
 //=============================================================================
@@ -10,27 +10,38 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	MAX_BULLET		(256)	// 弾最大数
+#define MAX_BULLET		(120)					// プレイヤーの数
+#define	BULLET_SIZE		(3.0f)				// 当たり判定の大きさ
+
+
 
 //*****************************************************************************
 // 構造体定義
 //*****************************************************************************
-typedef struct
+struct BULLET
 {
-	XMFLOAT4X4	mtxWorld;		// ワールドマトリックス
-	XMFLOAT3	pos;			// 位置
-	XMFLOAT3	rot;			// 角度
-	XMFLOAT3	scl;			// スケール
-	MATERIAL	material;		// マテリアル
-	float		spd;			// 移動量
-	float		fWidth;			// 幅
-	float		fHeight;		// 高さ
-	int			shadowIdx;		// 影ID
-	bool		use;			// 使用しているかどうか
+	XMFLOAT3		pos;		// ポリゴンの位置
+	XMFLOAT3		rot;		// ポリゴンの向き(回転)
+	XMFLOAT3		scl;		// ポリゴンの大きさ(スケール)
+
+	XMFLOAT3		velocity;
+	XMFLOAT3		acceleration;
 
 
-} BULLET;
+	XMFLOAT4X4		mtxWorld;	// ワールドマトリックス
 
+	bool			load;
+	DX11_MODEL		model;		// モデル情報
+
+	float			spd;		// 移動スピード
+	float			dir;		// 向き
+	float			size;		// 当たり判定の大きさ
+	int				shadowIdx;	// 影のIndex
+	bool			use;
+	XMFLOAT3			move;				// バレットの移動量
+
+
+};
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -40,8 +51,7 @@ void UninitBullet(void);
 void UpdateBullet(void);
 void DrawBullet(void);
 
-int SetBullet(XMFLOAT3 pos, XMFLOAT3 rot);
-
 BULLET* GetBullet(void);
+void SetBullet(XMFLOAT3 pos, XMFLOAT3 rot);
 
 

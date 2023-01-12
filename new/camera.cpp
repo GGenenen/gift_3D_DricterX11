@@ -117,7 +117,7 @@ void UpdateCamera(void)
 		g_Camera.pos.y -= VALUE_MOVE_CAMERA;
 	}
 
-	if (GetKeyboardPress(DIK_Q))
+	if (GetKeyboardPress(DIK_LEFT))
 	{// 注視点旋回「左」
 		g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
 		if (g_Camera.rot.y < -XM_PI)
@@ -129,7 +129,7 @@ void UpdateCamera(void)
 		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
 	}
 
-	if (GetKeyboardPress(DIK_E))
+	if (GetKeyboardPress(DIK_RIGHT))
 	{// 注視点旋回「右」
 		g_Camera.rot.y += VALUE_ROTATE_CAMERA;
 		if (g_Camera.rot.y > XM_PI)
@@ -141,15 +141,15 @@ void UpdateCamera(void)
 		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
 	}
 
-	if (GetKeyboardPress(DIK_T))
-	{// 注視点移動「上」
-		g_Camera.at.y += VALUE_MOVE_CAMERA;
-	}
+	//if (GetKeyboardPress(DIK_UP))
+	//{// 注視点移動「上」
+	//	g_Camera.at.y += VALUE_MOVE_CAMERA;
+	//}
 
-	if (GetKeyboardPress(DIK_B))
-	{// 注視点移動「下」
-		g_Camera.at.y -= VALUE_MOVE_CAMERA;
-	}
+	//if (GetKeyboardPress(DIK_DOWN))
+	//{// 注視点移動「下」
+	//	g_Camera.at.y -= VALUE_MOVE_CAMERA;
+	//}
 
 	if (GetKeyboardPress(DIK_U))
 	{// 近づく

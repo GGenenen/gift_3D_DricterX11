@@ -54,7 +54,7 @@ void InitLight(void)
 	g_Light[0].Diffuse   = XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f );	// 光の色
 	g_Light[0].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.3f);
 	g_Light[0].Type = LIGHT_TYPE_DIRECTIONAL;					// 平行光源
-	g_Light[0].Enable = false;									// このライトをON
+	g_Light[0].Enable = true;									// このライトをON
 	SetLight(0, &g_Light[0]);									// これで設定している
 	//      ↑        ↑
 	//  ライト番号   セットしたい配列のアドレス
@@ -67,36 +67,36 @@ void InitLight(void)
 	g_Light[1].Enable = true;									// このライトをON
 	SetLight(1, &g_Light[1]);									// これで設定している
 
-	// 点光源の設定
-	g_Light[2].Position = XMFLOAT3(50.0f, 60.0f, 50.0f);		// 光のポジション
-	g_Light[2].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
-	g_Light[2].Diffuse = XMFLOAT4(1.0f, 0.2f, 0.2f, 1.0f);		// 光の色
-	g_Light[2].Type = LIGHT_TYPE_POINT;							// 点光源
-	g_Light[2].Enable = true;									// このライトをON
-	SetLight(2, &g_Light[2]);
+	//// 点光源の設定
+	//g_Light[2].Position = XMFLOAT3(50.0f, 60.0f, 50.0f);		// 光のポジション
+	//g_Light[2].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
+	//g_Light[2].Diffuse = XMFLOAT4(1.0f, 0.2f, 0.2f, 1.0f);		// 光の色
+	//g_Light[2].Type = LIGHT_TYPE_POINT;							// 点光源
+	//g_Light[2].Enable = true;									// このライトをON
+	//SetLight(2, &g_Light[2]);
 
-	// 点光源の設定
-	g_Light[3].Position = XMFLOAT3(0.0f, 60.0f, -40.0f);		// 光のポジション
-	g_Light[3].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
-	g_Light[3].Diffuse = XMFLOAT4(0.2f, 0.2f, 1.0f, 1.0f);		// 光の色
-	g_Light[3].Type = LIGHT_TYPE_POINT;							// 点光源
-	g_Light[3].Enable = true;									// このライトをON
-	SetLight(3, &g_Light[3]);
+	//// 点光源の設定
+	//g_Light[3].Position = XMFLOAT3(0.0f, 60.0f, -40.0f);		// 光のポジション
+	//g_Light[3].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
+	//g_Light[3].Diffuse = XMFLOAT4(0.2f, 0.2f, 1.0f, 1.0f);		// 光の色
+	//g_Light[3].Type = LIGHT_TYPE_POINT;							// 点光源
+	//g_Light[3].Enable = true;									// このライトをON
+	//SetLight(3, &g_Light[3]);
 
-	// 点光源の設定
-	g_Light[4].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
-	g_Light[4].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		// 光の色
-	g_Light[4].Type = LIGHT_TYPE_POINT;							// 点光源
-	g_Light[4].Enable = true;									// このライトをON
-	SetLight(4, &g_Light[4]);
+	//// 点光源の設定
+	//g_Light[4].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
+	//g_Light[4].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		// 光の色
+	//g_Light[4].Type = LIGHT_TYPE_POINT;							// 点光源
+	//g_Light[4].Enable = true;									// このライトをON
+	//SetLight(4, &g_Light[4]);
 
-	// 点光源の設定
-	g_Light[5].Position = XMFLOAT3(-100.0f, 60.0f, -50.0f);			// 光の向き
-	g_Light[5].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
-	g_Light[5].Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);		// 光の色
-	g_Light[5].Type = LIGHT_TYPE_POINT;							// 点光源
-	g_Light[5].Enable = true;									// このライトをON
-	SetLight(5, &g_Light[5]);
+	//// 点光源の設定
+	//g_Light[5].Position = XMFLOAT3(-100.0f, 60.0f, -50.0f);			// 光の向き
+	//g_Light[5].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
+	//g_Light[5].Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);		// 光の色
+	//g_Light[5].Type = LIGHT_TYPE_POINT;							// 点光源
+	//g_Light[5].Enable = true;									// このライトをON
+	//SetLight(5, &g_Light[5]);
 
 	// フォグの初期化（霧の効果）
 	g_Fog.FogStart = 100.0f;									// 視点からこの距離離れるとフォグがかかり始める
