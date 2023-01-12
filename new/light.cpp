@@ -52,7 +52,7 @@ void InitLight(void)
 
 	// 平行光源の設定（世界を照らす光）
 	g_Light[0].Direction = XMFLOAT3( 0.0f, -1.0f, -1.0f );		// 光の向き
-	g_Light[0].Diffuse   = XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f );	// 光の色
+	g_Light[0].Diffuse   = XMFLOAT4(0.9f, 0.5f, 0.2f, 1.0f);	// 光の色
 	g_Light[0].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.3f);
 	g_Light[0].Type = LIGHT_TYPE_DIRECTIONAL;					// 平行光源
 	g_Light[0].Enable = true;									// このライトをON
@@ -60,13 +60,13 @@ void InitLight(void)
 	//      ↑        ↑
 	//  ライト番号   セットしたい配列のアドレス
 
-	//	// 平行光源の設定（世界を照らす光）
-	//g_Light[1].Direction = XMFLOAT3(0.0f, -1.0f, 1.0f);		// 光の向き
-	//g_Light[1].Diffuse = XMFLOAT4(0.8f, 0.8f, 0.1f, 1.0f);	// 光の色
-	//g_Light[1].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.3f);
-	//g_Light[1].Type = LIGHT_TYPE_DIRECTIONAL;					// 平行光源
-	//g_Light[1].Enable = true;									// このライトをON
-	//SetLight(1, &g_Light[1]);									// これで設定している
+		// 平行光源の設定（世界を照らす光）
+	g_Light[1].Direction = XMFLOAT3(0.0f, -1.0f, 1.0f);		// 光の向き
+	g_Light[1].Diffuse = XMFLOAT4(0.8f, 0.8f, 1.0f, 1.0f);	// 光の色
+	g_Light[1].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.3f);
+	g_Light[1].Type = LIGHT_TYPE_DIRECTIONAL;					// 平行光源
+	g_Light[1].Enable = true;									// このライトをON
+	SetLight(1, &g_Light[1]);									// これで設定している
 
 
 	//g_Light[1].Position = XMFLOAT3(-50.0f, 60.0f, 50.0f);		// 光のポジション
@@ -109,9 +109,9 @@ void InitLight(void)
 	//SetLight(5, &g_Light[5]);
 
 	// フォグの初期化（霧の効果）
-	g_Fog.FogStart = 100.0f;									// 視点からこの距離離れるとフォグがかかり始める
-	g_Fog.FogEnd   = 250.0f;									// ここまで離れるとフォグの色で見えなくなる
-	g_Fog.FogColor = XMFLOAT4{ 0.3f, 0.3f, 0.3f, 1.0f};		// フォグの色
+	g_Fog.FogStart = 50.0f;									// 視点からこの距離離れるとフォグがかかり始める
+	g_Fog.FogEnd   = 400.0f;									// ここまで離れるとフォグの色で見えなくなる
+	g_Fog.FogColor = XMFLOAT4{ 0.2f, 0.5f, 0.6f, 0.5f};		// フォグの色
 	SetFog(&g_Fog);
 	SetFogEnable(g_FogEnable);				// 他の場所もチェックする shadow
 

@@ -187,7 +187,7 @@ void DrawGame(void)
 	{
 	case MODE_GAME:
 		// 地面の描画処理
-		DrawMeshField();
+		//DrawMeshField();
 		// 影の描画処理
 		DrawShadow();
 		// プレイヤーの描画処理

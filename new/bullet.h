@@ -11,7 +11,7 @@
 // マクロ定義
 //*****************************************************************************
 #define MAX_BULLET		(120)					// プレイヤーの数
-#define	BULLET_SIZE		(3.0f)				// 当たり判定の大きさ
+#define	BULLET_SIZE		(20.0f)				// 当たり判定の大きさ
 
 
 
@@ -36,6 +36,7 @@ struct BULLET
 	float			spd;		// 移動スピード
 	float			dir;		// 向き
 	float			size;		// 当たり判定の大きさ
+	float			time;		// 当たり判定の大きさ
 	int				shadowIdx;	// 影のIndex
 	bool			use;
 	XMFLOAT3			move;				// バレットの移動量
