@@ -198,7 +198,7 @@ void DrawGame(void)
 		DrawEnemy();
 		DrawBuild();
 		// •Ç‚Ì•`‰æˆ—
-		DrawMeshWall();
+		//DrawMeshWall();
 		// –Ø‚Ì•`‰æˆ—
 		//DrawTree();
 		break;

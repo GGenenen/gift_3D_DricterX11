@@ -82,9 +82,9 @@ HRESULT InitBullet(void)
 
 		g_Bullet[i].pos = { 0.0f, 0.0f, 0.0f };
 		g_Bullet[i].rot = { 0.0f, 0.0f, 0.0f };
-		g_Bullet[i].scl = { 10.0f, 10.0f, 10.0f };
-		g_Bullet[i].velocity = { 0.0f, 2.0f, 90.0f };
-		//g_Bullet[i].velocity = g_Camera.at;
+		g_Bullet[i].scl = { 15.0f, 15.0f, 15.0f };
+		//g_Bullet[i].velocity = { 0.0f, 2.0f, 60.0f };
+		g_Bullet[i].velocity = g_Camera.at;
 		g_Bullet[i].acceleration = { 0.0f, -9.8f, 0.0f };
 
 
@@ -149,7 +149,7 @@ void UpdateBullet(void)
 	
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
-		////	// Key入力があったら移動処理する
+		//// Key入力があったら移動処理する
 		//if (g_Bullet[i].spd > 0.0f)
 		//{
 		//	//g_Bullet[i].rot.y = g_Bullet[i].dir + cam->rot.y;
@@ -157,7 +157,6 @@ void UpdateBullet(void)
 		//	// 入力のあった方向へプレイヤーを向かせて移動させる
 		//	g_Bullet[i].pos.x -= sinf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
 		//	g_Bullet[i].pos.z -= cosf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
-
 
 		//}
 
@@ -167,15 +166,19 @@ void UpdateBullet(void)
 
 		if (g_Bullet[i].use == TRUE)
 		{
+			g_Bullet[i].rot.y = g_Bullet[i].dir + cam->rot.y;
+
 			//垂直スピード
 			g_Bullet[i].velocity.y += g_Bullet[i].acceleration.y * dt;
 			//位置
-			//g_Bullet[i].pos.x += speed * sinf(g_Player.rot.y) * dt;
-			//g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
-			//g_Bullet[i].pos.z += speed * cosf(g_Player.rot.y) * dt;
-			g_Bullet[i].pos.x += g_Bullet[i].velocity.x * dt;
+			g_Bullet[i].pos.x += speed * sinf(g_Player.rot.y) * dt;
 			g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
-			g_Bullet[i].pos.z += g_Bullet[i].velocity.z * dt;
+			g_Bullet[i].pos.z += speed * cosf(g_Player.rot.y) * dt;
+
+			//g_Bullet[i].pos.x += g_Bullet[i].velocity.x * dt;
+			//g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
+			//g_Bullet[i].pos.z += g_Bullet[i].velocity.z * dt;
+
 
 		}
 

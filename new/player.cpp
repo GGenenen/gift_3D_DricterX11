@@ -182,8 +182,7 @@ void UpdatePlayer(void)
 	// ’e”­Ëˆ—
 	if (GetKeyboardTrigger(DIK_SPACE))
 	{
-		g_Player.dir = XM_PI;
-		//g_Camera.rot.y = XM_PI;
+		g_Player.dir = g_Camera.rot.y;
 		SetBullet(g_Player.pos, g_Player.rot);
 	}
 

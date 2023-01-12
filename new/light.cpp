@@ -60,13 +60,22 @@ void InitLight(void)
 	//      ↑        ↑
 	//  ライト番号   セットしたい配列のアドレス
 
-	g_Light[1].Position = XMFLOAT3(-50.0f, 60.0f, 50.0f);		// 光のポジション
-	g_Light[1].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
-	g_Light[1].Diffuse = XMFLOAT4(0.2f, 1.0f, 0.2f, 1.0f);		// 光の色
-	g_Light[1].Ambient = XMFLOAT4(0.2f, 1.0f, 0.2f, 1.0f);
-	g_Light[1].Type = LIGHT_TYPE_POINT;							// 点光源
-	g_Light[1].Enable = true;									// このライトをON
-	SetLight(1, &g_Light[1]);									// これで設定している
+	//	// 平行光源の設定（世界を照らす光）
+	//g_Light[1].Direction = XMFLOAT3(0.0f, -1.0f, 1.0f);		// 光の向き
+	//g_Light[1].Diffuse = XMFLOAT4(0.8f, 0.8f, 0.1f, 1.0f);	// 光の色
+	//g_Light[1].Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.3f);
+	//g_Light[1].Type = LIGHT_TYPE_DIRECTIONAL;					// 平行光源
+	//g_Light[1].Enable = true;									// このライトをON
+	//SetLight(1, &g_Light[1]);									// これで設定している
+
+
+	//g_Light[1].Position = XMFLOAT3(-50.0f, 60.0f, 50.0f);		// 光のポジション
+	//g_Light[1].Direction = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 光の向き
+	//g_Light[1].Diffuse = XMFLOAT4(0.2f, 1.0f, 0.2f, 1.0f);		// 光の色
+	//g_Light[1].Ambient = XMFLOAT4(0.2f, 1.0f, 0.2f, 1.0f);
+	//g_Light[1].Type = LIGHT_TYPE_POINT;							// 点光源
+	//g_Light[1].Enable = true;									// このライトをON
+	//SetLight(1, &g_Light[1]);									// これで設定している
 
 	//// 点光源の設定
 	//g_Light[2].Position = XMFLOAT3(50.0f, 60.0f, 50.0f);		// 光のポジション

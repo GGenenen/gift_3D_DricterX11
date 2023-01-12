@@ -22,7 +22,15 @@
 #define BUILD_SHADOW_SIZE	(0.4f)						// 影の大きさ
 #define BUILD_OFFSET_Y		(7.0f)						// エネミーの足元をあわせる
 
-#define	MODEL_0			"data/MODEL/enemy.obj"		// 読み込むモデル名
+#define	MODEL_0			"data/MODEL/kitchenBlender.obj"		// 読み込むモデル名
+#define	MODEL_1			"data/MODEL/kitchenStoveElectric.obj"		// 読み込むモデル名
+#define	MODEL_2			"data/MODEL/kitchenFridgeLarge.obj"		// 読み込むモデル名
+#define	MODEL_3			"data/MODEL/wall.obj"		// 読み込むモデル名
+
+
+
+
+
 
 
 //*****************************************************************************
@@ -44,7 +52,7 @@ static BUILD			g_Build[MAX_BUILD];				// エネミー
 
 int g_Build_load = 0;
 
-float size = 1.0f;
+float size = 10.0f;
 
 //=============================================================================
 // 初期化処理
@@ -59,13 +67,16 @@ HRESULT InitBuild(void)
 	}
 
 	LoadModel(MODEL_0, &g_Build[0].model);
-	LoadModel(MODEL_0, &g_Build[1].model);
-	LoadModel(MODEL_0, &g_Build[2].model);
-	LoadModel(MODEL_0, &g_Build[3].model);
+	LoadModel(MODEL_1, &g_Build[1].model);
+	LoadModel(MODEL_2, &g_Build[2].model);
+	LoadModel(MODEL_3, &g_Build[3].model);
+
 
 	g_Build[0].pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	g_Build[0].rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	g_Build[0].scl = XMFLOAT3(size, size, size);
+	g_Build[0].size = 20.0f;
+
 
 	g_Build[1].pos = XMFLOAT3(0.0f, 0.0f, -200.0f);
 	g_Build[1].rot = XMFLOAT3(0.0f, XM_PI / 2, 0.0f);
@@ -75,8 +86,8 @@ HRESULT InitBuild(void)
 	g_Build[2].rot = XMFLOAT3(0.0f, XM_PI, 0.0f);
 	g_Build[2].scl = XMFLOAT3(size, size, size);
 
-	g_Build[3].pos = XMFLOAT3(-200.0f, 0.0f, 0.0f);
-	g_Build[3].rot = XMFLOAT3(0.0f, XM_PI + XM_PI / 2, 0.0f);
+	g_Build[3].pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	g_Build[3].rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	g_Build[3].scl = XMFLOAT3(size, size, size);
 
 
