@@ -140,7 +140,7 @@ void UpdateTree(void)
 		if(g_aTree[nCntTree].bUse)
 		{
 			// âeÇÃà íuê›íË
-			SetPositionShadow(g_aTree[nCntTree].nIdxShadow, XMFLOAT3(g_aTree[nCntTree].pos.x, 0.1f, g_aTree[nCntTree].pos.z));
+			//SetPositionShadow(g_aTree[nCntTree].nIdxShadow, XMFLOAT3(g_aTree[nCntTree].pos.x, 0.1f, g_aTree[nCntTree].pos.z));
 		}
 	}
 
@@ -297,10 +297,10 @@ int SetTree(XMFLOAT3 pos, float fWidth, float fHeight, XMFLOAT4 col)
 			g_aTree[nCntTree].fHeight = fHeight;
 			g_aTree[nCntTree].bUse = true;
 
-			// âeÇÃê›íË
-			g_aTree[nCntTree].nIdxShadow = CreateShadow(g_aTree[nCntTree].pos, 0.5f, 0.5f);
+			//// âeÇÃê›íË
+			//g_aTree[nCntTree].nIdxShadow = CreateShadow(g_aTree[nCntTree].pos, 0.5f, 0.5f);
 
-			nIdxTree = nCntTree;
+			//nIdxTree = nCntTree;
 
 			break;
 		}

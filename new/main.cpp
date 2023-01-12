@@ -331,3 +331,5 @@ long GetMousePosY(void)
 {
 	return g_MouseY;
 }
+
+

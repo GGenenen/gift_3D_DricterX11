@@ -22,7 +22,7 @@
 #define BUILD_SHADOW_SIZE	(0.4f)						// 影の大きさ
 #define BUILD_OFFSET_Y		(7.0f)						// エネミーの足元をあわせる
 
-#define	MODEL_0			"data/MODEL/kairou.obj"		// 読み込むモデル名
+#define	MODEL_0			"data/MODEL/enemy.obj"		// 読み込むモデル名
 
 
 //*****************************************************************************

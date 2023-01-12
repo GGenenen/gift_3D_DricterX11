@@ -17,11 +17,15 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	MODEL_BULLET01		"data/MODEL/apple.obj"			// 読み込むモデル名
+#define	MODEL_BULLET01		"data/MODEL/tomato.obj"			// 読み込むモデル名
 #define	MODEL_BULLET02		"data/MODEL/pizza.obj"			// 読み込むモデル名
+#define	MODEL_BULLET03		"data/MODEL/sushiEgg.obj"			// 読み込むモデル名
+#define	MODEL_BULLET04		"data/MODEL/eggCooked.obj"			// 読み込むモデル名
 
 #define BULLET_MODEL_TYPE_1 1
 #define BULLET_MODEL_TYPE_2 2
+#define BULLET_MODEL_TYPE_3 3
+#define BULLET_MODEL_TYPE_4 4
 
 #define	VALUE_MOVE			(2.0f)							// 移動量
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// 回転量
@@ -53,28 +57,34 @@ int currentBulletModelType = BULLET_MODEL_TYPE_1;
 //=============================================================================
 HRESULT InitBullet(void)
 {
-	//LoadModel(MODEL_Bullet, &g_Bullet[i].model);
-
 
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
 
-		if (currentBulletModelType == BULLET_MODEL_TYPE_1)
+		switch (currentBulletModelType)
 		{
+		case BULLET_MODEL_TYPE_1:
 			LoadModel(MODEL_BULLET01, &g_Bullet[i].model);
-		}
-		else if(currentBulletModelType == BULLET_MODEL_TYPE_2)
-		{
+			break;
+		case BULLET_MODEL_TYPE_2:
 			LoadModel(MODEL_BULLET02, &g_Bullet[i].model);
+			break;		
+		case BULLET_MODEL_TYPE_3:
+			LoadModel(MODEL_BULLET03, &g_Bullet[i].model);
+			break;		
+		case BULLET_MODEL_TYPE_4:
+			LoadModel(MODEL_BULLET04, &g_Bullet[i].model);
+			break;
 		}
+
 
 		g_Bullet[i].load = true;
 
 		g_Bullet[i].pos = { 0.0f, 0.0f, 0.0f };
 		g_Bullet[i].rot = { 0.0f, 0.0f, 0.0f };
 		g_Bullet[i].scl = { 10.0f, 10.0f, 10.0f };
-		//g_Bullet[i].velocity = { 0.0f, 2.0f, 90.0f };
-		g_Bullet[i].velocity = g_Camera.at;
+		g_Bullet[i].velocity = { 0.0f, 2.0f, 90.0f };
+		//g_Bullet[i].velocity = g_Camera.at;
 		g_Bullet[i].acceleration = { 0.0f, -9.8f, 0.0f };
 
 
@@ -124,11 +134,19 @@ void UpdateBullet(void)
 	{
 		currentBulletModelType = BULLET_MODEL_TYPE_1;
 	}
-	else if (GetKeyboardTrigger(DIK_2))
+	if (GetKeyboardTrigger(DIK_2))
 	{
 		currentBulletModelType = BULLET_MODEL_TYPE_2;
 	}
-
+	if (GetKeyboardTrigger(DIK_3))
+	{
+		currentBulletModelType = BULLET_MODEL_TYPE_3;
+	}
+	if (GetKeyboardTrigger(DIK_4))
+	{
+		currentBulletModelType = BULLET_MODEL_TYPE_4;
+	}
+	
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
 		////	// Key入力があったら移動処理する
@@ -152,12 +170,12 @@ void UpdateBullet(void)
 			//垂直スピード
 			g_Bullet[i].velocity.y += g_Bullet[i].acceleration.y * dt;
 			//位置
-			g_Bullet[i].pos.x += speed * sinf(g_Camera.at.x) * dt;
-			g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
-			g_Bullet[i].pos.z += speed * cosf(g_Camera.at.x) * dt;
-			//g_Bullet[i].pos.x += g_Bullet[i].velocity.x * dt;
+			//g_Bullet[i].pos.x += speed * sinf(g_Player.rot.y) * dt;
 			//g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
-			//g_Bullet[i].pos.z += g_Bullet[i].velocity.z * dt;
+			//g_Bullet[i].pos.z += speed * cosf(g_Player.rot.y) * dt;
+			g_Bullet[i].pos.x += g_Bullet[i].velocity.x * dt;
+			g_Bullet[i].pos.y += g_Bullet[i].velocity.y * dt;
+			g_Bullet[i].pos.z += g_Bullet[i].velocity.z * dt;
 
 		}
 
@@ -269,13 +287,20 @@ void SetBullet(XMFLOAT3 pos, XMFLOAT3 rot)
 	{
 		if (g_Bullet[i].use == FALSE)		// 未使用状態のバレットを見つける
 		{
-			if (currentBulletModelType == BULLET_MODEL_TYPE_1)
+			switch (currentBulletModelType)
 			{
+			case BULLET_MODEL_TYPE_1:
 				LoadModel(MODEL_BULLET01, &g_Bullet[i].model);
-			}
-			else if (currentBulletModelType == BULLET_MODEL_TYPE_2)
-			{
+				break;
+			case BULLET_MODEL_TYPE_2:
 				LoadModel(MODEL_BULLET02, &g_Bullet[i].model);
+				break;
+			case BULLET_MODEL_TYPE_3:
+				LoadModel(MODEL_BULLET03, &g_Bullet[i].model);
+				break;
+			case BULLET_MODEL_TYPE_4:
+				LoadModel(MODEL_BULLET04, &g_Bullet[i].model);
+				break;
 			}
 
 			g_Bullet[i].use = TRUE;			// 使用状態へ変更する

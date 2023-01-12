@@ -183,7 +183,7 @@ void UpdatePlayer(void)
 	{
 		g_Player.dir = XM_PI;
 		//g_Camera.rot.y = XM_PI;
-		SetBullet(g_Player.pos, g_Camera.at );
+		SetBullet(g_Player.pos, g_Player.rot);
 	}
 
 

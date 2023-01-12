@@ -73,7 +73,7 @@ void InitGame(void)
 	InitEnemy();
 
 	// 木を生やす
-	InitTree();
+	//InitTree();
 
 	// 弾の初期化
 	InitBullet();
@@ -103,7 +103,7 @@ void UninitGame(void)
 	UninitBullet();
 
 	// 木の終了処理
-	UninitTree();
+	//UninitTree();
 
 	// エネミーの終了処理
 	UninitEnemy();
@@ -158,7 +158,7 @@ void UpdateGame(void)
 		// エネミーの更新処理
 		UpdateEnemy();
 		// 木の更新処理
-		UpdateTree();
+		//UpdateTree();
 		// 弾の更新処理
 		UpdateBullet();
 		// 影の更新処理
@@ -195,10 +195,11 @@ void DrawGame(void)
 		DrawBullet();
 		// エネミーの描画処理
 		DrawEnemy();
+		DrawBuild();
 		// 壁の描画処理
 		DrawMeshWall();
 		// 木の描画処理
-		DrawTree();
+		//DrawTree();
 		break;
 	}
 
@@ -348,6 +349,8 @@ void CheckHit(void)
 {
 	ENEMY* enemy = GetEnemy();		// エネミーのポインターを初期化
 	PLAYER* player = GetPlayer();	// プレイヤーのポインターを初期化
+	BULLET* bullet = GetBullet();	// 弾のポインターを初期化
+
 
 	// 敵とプレイヤーキャラ
 	for (int i = 0; i < MAX_ENEMY; i++)
@@ -371,7 +374,37 @@ void CheckHit(void)
 		}
 	}
 	// プレイヤーの弾と敵
+		// プレイヤーの弾と敵
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		//弾の有効フラグをチェックする
+		if (bullet[i].use == false)
+			continue;
 
+		// 敵と当たってるか調べる
+		for (int j = 0; j < MAX_ENEMY; j++)
+		{
+			//敵の有効フラグをチェックする
+			if (enemy[j].use == false)
+				continue;
+
+			//BCの当たり判定
+			if (CollisionBC(bullet[i].pos, enemy[j].pos, bullet[i].size, enemy[j].size))
+			{
+				// 当たったから未使用に戻す
+				bullet[i].use = false;
+				ReleaseShadow(bullet[i].shadowIdx);
+
+				// 敵キャラクターは倒される
+				enemy[j].use = false;
+				ReleaseShadow(enemy[j].shadowIdx);
+
+				// スコアを足す
+				//AddScore(10);
+			}
+		}
+
+	}
 
 
 
