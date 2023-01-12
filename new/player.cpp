@@ -46,7 +46,8 @@ HRESULT InitPlayer(void)
 	LoadModel(MODEL_PLAYER, &g_Player.model);
 	g_Player.load = true;
 
-	g_Player.pos = { -282.0f, PLAYER_OFFSET_Y, -280.0f };
+	g_Player.pos = { 0.0f, PLAYER_OFFSET_Y, 0.0f };
+	g_Player.repos = { 0.0f, PLAYER_OFFSET_Y, 0.0f };
 	g_Player.rot = { 0.0f, 0.0f, 0.0f };
 	g_Player.scl = { 1.0f, 1.0f, 1.0f };
 
@@ -106,9 +107,11 @@ void UpdatePlayer(void)
 
 	CAMERA* cam = GetCamera();
 
+	g_Player.repos = g_Player.pos;
 	g_Player.spd *= 0.9f;
 
 	// 移動処理
+
 	if (GetKeyboardPress(DIK_A))
 	{
 		g_Player.spd = VALUE_MOVE;
@@ -182,7 +185,8 @@ void UpdatePlayer(void)
 	// 弾発射処理
 	if (GetKeyboardTrigger(DIK_SPACE))
 	{
-		g_Player.dir = g_Camera.rot.y;
+		g_Player.dir = XM_PI;
+		//g_Player.dir = g_Camera.rot.y;
 		SetBullet(g_Player.pos, g_Player.rot);
 	}
 
@@ -196,18 +200,41 @@ void UpdatePlayer(void)
 	g_Player.spd *= 0.8f;
 
 
-	{	// ポイントライトのテスト
-		LIGHT *light = GetLightData(1);
-		XMFLOAT3 pos = g_Player.pos;
-		pos.y += 30.0f;
+	//{	// ポイントライトのテスト
+	//	LIGHT *light = GetLightData(1);
+	//	XMFLOAT3 pos = g_Player.pos;
+	//	pos.y += 30.0f;
 
-		light->Position = pos;
-		light->Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		light->Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		light->Type = LIGHT_TYPE_POINT;
-		light->Enable = true;
-		SetLightData(1, light);
-	}
+	//	light->Position = pos;
+	//	light->Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	//	light->Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	//	light->Type = LIGHT_TYPE_POINT;
+	//	light->Enable = true;
+	//	SetLightData(1, light);
+	//}
+
+
+	// MAP外チェック
+
+	//if (g_Player.pos.x < 0.0f)
+	//{
+	//	g_Player.pos.x = 0.0f;
+	//}
+
+	//if (g_Player.pos.x > bg->w)
+	//{
+	//	g_Player.pos.x = bg->w;
+	//}
+
+	//if (g_Player.pos.z < 0.0f)
+	//{
+	//	g_Player.pos.z = 0.0f;
+	//}
+
+	//if (g_Player.pos.z > bg->h)
+	//{
+	//	g_Player.pos.z = bg->h;
+	//}
 
 
 #ifdef _DEBUG	// デバッグ情報を表示する

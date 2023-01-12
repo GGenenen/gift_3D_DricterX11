@@ -319,7 +319,7 @@ void DrawMeshField(void)
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+	material.Diffuse = { 1.0f, 1.0f, 1.0f, 0.3f };
 	SetMaterial(material);
 
 	// テクスチャ設定

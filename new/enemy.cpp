@@ -18,7 +18,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	MODEL_ENEMY		"data/MODEL/test2.obj"			// 読み込むモデル名
+#define	MODEL_ENEMY		"data/MODEL/characterGhost.obj"			// 読み込むモデル名
 
 #define	VALUE_MOVE			(2.0f)							// 移動量
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// 回転量
@@ -39,15 +39,15 @@ static ENEMY				g_Enemy[MAX_ENEMY];						// エネミー
 
 static INTERPOLATION_DATA g_MoveTbl0[] = {
 	//座標									回転率							拡大率					時間
-	{ XMFLOAT3(0.0f,  0.0f, 0.0f),	XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(0.2f, 0.2f, 0.2f),	20 },
-	{ XMFLOAT3(0.0f,  10.0f, 0.0f),	XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(0.2f, 0.2f, 0.2f),	20 },
+	{ XMFLOAT3(0.0f,  0.0f, 0.0f),	XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(1.0f, 1.0f, 1.0f),	20 },
+	{ XMFLOAT3(0.0f,  10.0f, 0.0f),	XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(1.0f, 1.0f, 1.0f),	20 },
 };
 
 
 static INTERPOLATION_DATA g_MoveTbl1[] = {
 	//座標									回転率							拡大率						時間
-	{ XMFLOAT3(100.0f,   0.0f, 0.0f),		XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(0.2f, 0.2f, 0.2f),	120 },
-	{ XMFLOAT3(0.0f,   0.0f, 100.0f),		XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(0.2f, 0.2f, 0.2f),	120 },
+	{ XMFLOAT3(100.0f,   0.0f, 0.0f),		XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(1.0f, 1.0f, 1.0f),	120 },
+	{ XMFLOAT3(0.0f,   0.0f, 100.0f),		XMFLOAT3(0.0f, 0.0f, 0.0f),		XMFLOAT3(1.0f, 1.0f, 1.0f),	120 },
 };
 
 
@@ -80,7 +80,7 @@ HRESULT InitEnemy(void)
 		LoadModel(MODEL_ENEMY, &g_Enemy[i].model);
 		g_Enemy[i].load = true;
 		g_Enemy[i].rot = { 0.0f, 0.0f, 0.0f };
-		g_Enemy[i].scl = { 0.2f, 0.2f, 0.2f };
+		g_Enemy[i].scl = { 3.0f, 3.0f, 3.0f };
 
 		g_Enemy[i].spd = 0.0f;			// 移動スピードクリア
 		g_Enemy[i].size = ENEMY_SIZE;	// 当たり判定の大きさ

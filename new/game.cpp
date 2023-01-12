@@ -351,6 +351,7 @@ void CheckHit(void)
 	ENEMY* enemy = GetEnemy();		// エネミーのポインターを初期化
 	PLAYER* player = GetPlayer();	// プレイヤーのポインターを初期化
 	BULLET* bullet = GetBullet();	// 弾のポインターを初期化
+	BUILD* build = GetBuild();	// ビルドのポインターを初期化
 
 
 	// 敵とプレイヤーキャラ
@@ -374,8 +375,8 @@ void CheckHit(void)
 
 		}
 	}
+
 	// プレイヤーの弾と敵
-		// プレイヤーの弾と敵
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
 		//弾の有効フラグをチェックする
@@ -407,6 +408,23 @@ void CheckHit(void)
 
 	}
 
+	// プレイヤーとビルド
+
+	{
+		// 敵と当たってるか調べる
+		for (int i = 0; i < MAX_BUILD; i++)
+		{
+
+			//BCの当たり判定
+			if (CollisionBC(player->pos, build[i].pos, player->size, build[i].size))
+			{
+				//// 当たったから戻の位置に戻す
+				player->pos = player->repos;
+
+			}
+		}
+
+	}
 
 
 	// エネミーが全部死亡したら状態遷移
@@ -420,8 +438,9 @@ void CheckHit(void)
 	// エネミーが０匹？
 	if (enemy_count == 0)
 	{
-		//SetFade(FADE_OUT, MODE_RESULT);
+		SetFade(FADE_OUT, MODE_RESULT);
 	}
+
 }
 
 
