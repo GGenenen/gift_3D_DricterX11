@@ -26,11 +26,13 @@ static LIGHT	g_Light[LIGHT_MAX];		//ライトを制御するための配列で現在5(LIGHT_MAX)
 
 static FOG		g_Fog;					//霧（フォグ）の制御	
 
-static BOOL		g_FogEnable = 0;			//霧 ON/OFF
+static BOOL		g_FogEnable = 1;			//霧 ON/OFF
+
 
 int Lighting=0;
 float LightingF = 0;
 bool LightType = false;
+
 //=============================================================================
 // 初期化処理
 //=============================================================================
@@ -123,90 +125,99 @@ void InitLight(void)
 //=============================================================================
 void UpdateLight(void)
 {
-	if (LightType == true)
+
+
+	if (GetKeyboardTrigger(DIK_F))
 	{
-		int randtime = rand() % 50;
-
-		if (randtime <= 35)
-		{
-			Lighting += rand() % 80;
-		}
-		else if (randtime > 35 && randtime < 40)
-		{
-			Lighting += rand() % 30 + 50;
-		}
-		else
-		{
-			Lighting += rand() % 50 + 50;
-		}
-
-		if (Lighting < 5000)
-		{
-			g_Light[0].Enable = false;
-			SetLight(0, &g_Light[0]);
-
-			for (int i = 1; i < 4; i++)
-			{
-				g_Light[i].Enable = true;
-				SetLight(i, &g_Light[i]);
-			}
-		}
-		else if (Lighting >= 5000 && Lighting <= 6000)
-		{
-			g_Light[0].Enable = true;
-			SetLight(0, &g_Light[0]);
-
-			for (int i = 1; i < 4; i++)
-			{
-				g_Light[i].Enable = false;
-				SetLight(i, &g_Light[i]);
-			}
-		}
-		else
-		{
-			for (int i = 1; i < 4; i++)
-			{
-				float red = rand() % 200 * 0.01f;
-				float green = rand() % 200 * 0.01f;
-				float blue = rand() % 200 * 0.01f;
-
-				g_Light[i].Diffuse = XMFLOAT4(red, green, blue, 1.0f);		// 光の色
-
-				SetLight(i, &g_Light[i]);
-			}
-			Lighting = 0;
-		}
+		//g_FogEnable=g_FogEnable ? true : false;
+		g_FogEnable = !g_FogEnable;
 	}
-	else
-	{
-		LightingF += 0.02f;
-		for (int i = 1; i < 4; i++)
-		{
-			float red, green, blue;
-			switch (i)
-			{
-			case 1:
-				red = sinf(LightingF);
-				green = cosf(LightingF);
-				blue = sinf(LightingF) * cosf(LightingF);
-				break;
-			case 2:
-				green = sinf(LightingF);
-				blue = cosf(LightingF);
-				red = sinf(LightingF) * cosf(LightingF);
-				break;
-			case 3:
-				blue = sinf(LightingF);
-				red = cosf(LightingF);
-				green = sinf(LightingF) * cosf(LightingF);
-				break;
-			}
 
-			g_Light[i].Diffuse = XMFLOAT4(red, green, blue, 1.0f);		// 光の色
 
-			SetLight(i, &g_Light[i]);
-		}
-	}
+	//if (LightType == true)
+	//{
+	//	int randtime = rand() % 50;
+
+	//	if (randtime <= 35)
+	//	{
+	//		Lighting += rand() % 80;
+	//	}
+	//	else if (randtime > 35 && randtime < 40)
+	//	{
+	//		Lighting += rand() % 30 + 50;
+	//	}
+	//	else
+	//	{
+	//		Lighting += rand() % 50 + 50;
+	//	}
+
+	//	if (Lighting < 5000)
+	//	{
+	//		g_Light[0].Enable = false;
+	//		SetLight(0, &g_Light[0]);
+
+	//		for (int i = 1; i < 4; i++)
+	//		{
+	//			g_Light[i].Enable = true;
+	//			SetLight(i, &g_Light[i]);
+	//		}
+	//	}
+	//	else if (Lighting >= 5000 && Lighting <= 6000)
+	//	{
+	//		g_Light[0].Enable = true;
+	//		SetLight(0, &g_Light[0]);
+
+	//		for (int i = 1; i < 4; i++)
+	//		{
+	//			g_Light[i].Enable = false;
+	//			SetLight(i, &g_Light[i]);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		for (int i = 1; i < 4; i++)
+	//		{
+	//			float red = rand() % 200 * 0.01f;
+	//			float green = rand() % 200 * 0.01f;
+	//			float blue = rand() % 200 * 0.01f;
+
+	//			g_Light[i].Diffuse = XMFLOAT4(red, green, blue, 1.0f);		// 光の色
+
+	//			SetLight(i, &g_Light[i]);
+	//		}
+	//		Lighting = 0;
+	//	}
+	//}
+	//else
+	//{
+	//	LightingF += 0.02f;
+	//	for (int i = 1; i < 4; i++)
+	//	{
+	//		float red, green, blue;
+	//		switch (i)
+	//		{
+	//		case 1:
+	//			red = sinf(LightingF);
+	//			green = cosf(LightingF);
+	//			blue = sinf(LightingF) * cosf(LightingF);
+	//			break;
+	//		case 2:
+	//			green = sinf(LightingF);
+	//			blue = cosf(LightingF);
+	//			red = sinf(LightingF) * cosf(LightingF);
+	//			break;
+	//		case 3:
+	//			blue = sinf(LightingF);
+	//			red = cosf(LightingF);
+	//			green = sinf(LightingF) * cosf(LightingF);
+	//			break;
+	//		}
+
+	//		g_Light[i].Diffuse = XMFLOAT4(red, green, blue, 1.0f);		// 光の色
+
+	//		SetLight(i, &g_Light[i]);
+	//	}
+	//}
 
 }
 

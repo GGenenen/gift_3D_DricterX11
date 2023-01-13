@@ -22,6 +22,12 @@
 #define BUTTON_DOWN		0x00000002l	// 方向キー下(.IY>0)
 #define BUTTON_LEFT		0x00000004l	// 方向キー左(.IX<0)
 #define BUTTON_RIGHT	0x00000008l	// 方向キー右(.IX>0)
+
+#define BUTTON_R_UP		0x00010000l	// 右上(.IY<0)
+#define BUTTON_R_DOWN	0x00020000l	// 右下(.IY>0)
+#define BUTTON_R_LEFT	0x00040000l	// 右左(.IX<0)
+#define BUTTON_R_RIGHT	0x00080000l	// 右右(.IX>0)
+
 #define BUTTON_A		0x00000010l	// Ａボタン(.rgbButtons[0]&0x80)
 #define BUTTON_B		0x00000020l	// Ｂボタン(.rgbButtons[1]&0x80)
 #define BUTTON_C		0x00000040l	// Ｃボタン(.rgbButtons[2]&0x80)

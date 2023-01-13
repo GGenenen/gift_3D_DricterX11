@@ -7,13 +7,14 @@
 #include "tutorial.h"
 #include "input.h"
 #include "fade.h"
+#include "sound.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define TEXTURE_WIDTH				(SCREEN_WIDTH)	// 背景サイズ
 #define TEXTURE_HEIGHT				(SCREEN_HEIGHT)	// 
-#define TEXTURE_MAX					(5)			// テクスチャの数
+#define TEXTURE_MAX					(1)			// テクスチャの数
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -27,14 +28,14 @@ static ID3D11Buffer* g_VertexBuffer = NULL;		// 頂点情報
 static ID3D11ShaderResourceView* g_Texture[TEXTURE_MAX] = { NULL };	// テクスチャ情報
 
 static char* g_TexturName[TEXTURE_MAX] = {
-	"data/TEXTURE/bg001.png",
-	"data/TEXTURE/bg002.png",
-	"data/TEXTURE/bg003.png",
-	"data/TEXTURE/bg004.png",
-	"data/TEXTURE/tutorial.png",
+	"data/TEXTURE/tuto.jpg",
+	//"data/TEXTURE/bg002.png",
+	//"data/TEXTURE/bg003.png",
+	//"data/TEXTURE/bg004.png",
+	//"data/TEXTURE/tutorial.png",
 };
 
-static BOOL						g_Load = FALSE;
+static BOOL						g_Load = 1;
 static TUTORIAL					g_Tutorial[TEXTURE_MAX];
 
 //=============================================================================
@@ -70,17 +71,17 @@ HRESULT InitTutorial(void)
 	// 変数の初期化
 	for (int i = 0; i < TEXTURE_MAX; i++)
 	{
-		g_Tutorial[i].w = TEXTURE_WIDTH * 1.6;
+		g_Tutorial[i].w = TEXTURE_WIDTH ;
 		g_Tutorial[i].h = TEXTURE_HEIGHT;
 		g_Tutorial[i].pos = XMFLOAT3(TEXTURE_WIDTH / 2, TEXTURE_HEIGHT / 2, 0.0f);
 		g_Tutorial[i].scrl = 0;
 	}
 
-	// BGM再生
-	g_Tutorial[4].pos = XMFLOAT3(0.0f, TEXTURE_HEIGHT / 2, 0.0f);
-	g_Tutorial[4].w = TEXTURE_WIDTH * 2;
+	//// BGM再生
+	//g_Tutorial[4].pos = XMFLOAT3(0.0f, TEXTURE_HEIGHT / 2, 0.0f);
+	//g_Tutorial[4].w = TEXTURE_WIDTH * 2;
 
-	g_Tutorial[4].h = 100;
+	//g_Tutorial[4].h = 100;
 
 
 	g_Load = TRUE;
@@ -118,19 +119,21 @@ void UninitTutorial(void)
 void UpdateTutorial(void)
 {
 
-	g_Tutorial[0].scrl += 0.002f;
-	g_Tutorial[1].scrl += 0.0015f;
-	g_Tutorial[2].scrl += 0.001f;
-	g_Tutorial[3].scrl += 0.001f;
-	g_Tutorial[4].scrl += 0.003f;
+	//g_Tutorial[0].scrl += 0.002f;
+	//g_Tutorial[1].scrl += 0.0015f;
+	//g_Tutorial[2].scrl += 0.001f;
+	//g_Tutorial[3].scrl += 0.001f;
+	//g_Tutorial[4].scrl += 0.003f;
 
-	if (g_Tutorial[0].scrl >= 1.0f)
-	{
-		SetFade(FADE_OUT, MODE_GAME);
-	}
+	//if (g_Tutorial[0].scrl >= 1.0f)
+	//{
+	//	SetFade(FADE_OUT, MODE_GAME);
+	//}
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
+		PlaySound(SOUND_LABEL_SE_button);
+
 		SetFade(FADE_OUT, MODE_GAME);
 	}
 
@@ -177,62 +180,62 @@ void DrawTutorial(void)
 		// ポリゴン描画
 		GetDeviceContext()->Draw(4, 0);
 	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Tutorial[1].pos.x, g_Tutorial[1].pos.y, g_Tutorial[1].w, g_Tutorial[1].h,
-			g_Tutorial[1].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Tutorial[1].pos.x, g_Tutorial[1].pos.y, g_Tutorial[1].w, g_Tutorial[1].h,
+	//		g_Tutorial[1].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Tutorial[2].pos.x, g_Tutorial[2].pos.y, g_Tutorial[2].w, g_Tutorial[2].h,
-			g_Tutorial[2].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Tutorial[2].pos.x, g_Tutorial[2].pos.y, g_Tutorial[2].w, g_Tutorial[2].h,
+	//		g_Tutorial[2].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[3]);
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[3]);
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Tutorial[3].pos.x, g_Tutorial[3].pos.y, g_Tutorial[3].w, g_Tutorial[3].h,
-			g_Tutorial[3].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Tutorial[3].pos.x, g_Tutorial[3].pos.y, g_Tutorial[3].w, g_Tutorial[3].h,
+	//		g_Tutorial[3].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[4]);
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[4]);
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Tutorial[4].pos.x, g_Tutorial[4].pos.y, g_Tutorial[4].w, g_Tutorial[4].h,
-			g_Tutorial[4].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Tutorial[4].pos.x, g_Tutorial[4].pos.y, g_Tutorial[4].w, g_Tutorial[4].h,
+	//		g_Tutorial[4].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
 
 }
 

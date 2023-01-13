@@ -48,8 +48,8 @@ using namespace DirectX;
 // マクロ定義
 //*****************************************************************************
 #define UI_SCALE		(2)
-#define SCREEN_WIDTH	(960 * UI_SCALE)			// ウインドウの幅
-#define SCREEN_HEIGHT	(540 * UI_SCALE)			// ウインドウの高さ
+#define SCREEN_WIDTH	(1080)			// ウインドウの幅
+#define SCREEN_HEIGHT	(720)			// ウインドウの高さ
 //#define SCREEN_WIDTH	(960)			// ウインドウの幅
 //#define SCREEN_HEIGHT	(540)			// ウインドウの高さ
 #define SCREEN_CENTER_X	(SCREEN_WIDTH / 2)	// ウインドウの中心Ｘ座標

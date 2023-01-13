@@ -430,6 +430,13 @@ HRESULT InitializePad(void)			// パッド初期化
 		diprg.diph.dwObj		= DIJOFS_Y;
 		pGamePad[i]->SetProperty(DIPROP_RANGE, &diprg.diph);
 
+		// X軸の範囲を設定
+		diprg.diph.dwObj = DIJOFS_RX;
+		pGamePad[i]->SetProperty(DIPROP_RANGE, &diprg.diph);
+		// Y軸の範囲を設定
+		diprg.diph.dwObj = DIJOFS_RY;
+		pGamePad[i]->SetProperty(DIPROP_RANGE, &diprg.diph);
+
 		// 各軸ごとに、無効のゾーン値を設定する。
 		// 無効ゾーンとは、中央からの微少なジョイスティックの動きを無視する範囲のこと。
 		// 指定する値は、10000に対する相対値(2000なら20パーセント)。
@@ -444,7 +451,14 @@ HRESULT InitializePad(void)			// パッド初期化
 		//Y軸の無効ゾーンを設定
 		dipdw.diph.dwObj		= DIJOFS_Y;
 		pGamePad[i]->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
-			
+		
+		//X軸の無効ゾーンを設定
+		dipdw.diph.dwObj = DIJOFS_RX;
+		pGamePad[i]->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+		//Y軸の無効ゾーンを設定
+		dipdw.diph.dwObj = DIJOFS_RY;
+		pGamePad[i]->SetProperty(DIPROP_DEADZONE, &dipdw.diph);
+
 		//ジョイスティック入力制御開始
 		pGamePad[i]->Acquire();
 	}
@@ -470,6 +484,7 @@ void UpdatePad(void)
 {
 	HRESULT			result;
 	DIJOYSTATE2		dijs;
+
 	int				i;
 
 	for ( i=0 ; i<padCount ; i++ ) 
@@ -501,6 +516,16 @@ void UpdatePad(void)
 		if ( dijs.lX < 0 )					padState[i] |= BUTTON_LEFT;
 		//* x-axis (right)
 		if ( dijs.lX > 0 )					padState[i] |= BUTTON_RIGHT;
+
+		//* y-axis (forward)
+		if (dijs.lRy < 0)					padState[i] |= BUTTON_R_UP;
+		//* y-axis (backward)
+		if (dijs.lRy > 0)					padState[i] |= BUTTON_R_DOWN;
+		//* x-axis (left)
+		if (dijs.lRx < 0)					padState[i] |= BUTTON_R_LEFT;
+		//* x-axis (right)
+		if (dijs.lRx > 0)					padState[i] |= BUTTON_R_RIGHT;
+
 		//* Ａボタン
 		if ( dijs.rgbButtons[0] & 0x80 )	padState[i] |= BUTTON_A;
 		//* Ｂボタン

@@ -14,7 +14,7 @@
 #include "sprite.h"
 #include "fade.h"
 #include "camera.h"
-
+#include "XInput.h"
 
 #include "game.h"
 
@@ -22,7 +22,7 @@
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"			// ウインドウのクラス名
-#define WINDOW_NAME		"メッシュ表示"		// ウインドウのキャプション名
+#define WINDOW_NAME		"GhostFinders"		// ウインドウのキャプション名
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -71,7 +71,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		(HBRUSH)(COLOR_WINDOW + 1),
 		NULL,
 		CLASS_NAME,
-		NULL
+				NULL
 	};
 	HWND		hWnd;
 	MSG			msg;
@@ -97,7 +97,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	//int id = MessageBox(NULL, "Windowモードでプレイしますか？", "起動モード", MB_YESNOCANCEL | MB_ICONQUESTION);
 	//switch (id)
-	//{
+	//{	 
 	//case IDYES:		// YesならWindowモードで起動
 	//	mode = true;
 	//	break;

@@ -12,6 +12,8 @@
 #include "shadow.h"
 #include "light.h"
 #include "bullet.h"
+#include "XInput.h"
+
 
 //*****************************************************************************
 // マクロ定義
@@ -35,6 +37,7 @@
 //*****************************************************************************
 static PLAYER				g_Player;						// プレイヤー
 static CAMERA				g_Camera;						// プレイヤー
+
 
 
 
@@ -97,11 +100,11 @@ void UpdatePlayer(void)
 		Lightpos.y += 10;
 		PlayerLight->Position = Lightpos;
 
-		if (GetKeyboardTrigger(DIK_F))
-		{
-			PlayerLight->Enable = PlayerLight->Enable ? false : true;
-		}
-		SetLightData(4, PlayerLight);
+		//if (GetKeyboardTrigger(DIK_F))
+		//{
+		//	PlayerLight->Enable = PlayerLight->Enable ? false : true;
+		//}
+		//SetLightData(4, PlayerLight);
 
 	}
 
@@ -112,25 +115,25 @@ void UpdatePlayer(void)
 
 	// 移動処理
 
-	if (GetKeyboardPress(DIK_A))
+	if (GetKeyboardPress(DIK_A) || IsButtonPressed(0, BUTTON_LEFT))
 	{
 		g_Player.spd = VALUE_MOVE;
 		g_Player.pos.x -= g_Player.spd;
 		g_Player.dir = XM_PI / 2;
 	}
-	if (GetKeyboardPress(DIK_D))
+	if (GetKeyboardPress(DIK_D) || IsButtonPressed(0, BUTTON_RIGHT))
 	{
 		g_Player.spd = VALUE_MOVE;
 		g_Player.pos.x += g_Player.spd;
 		g_Player.dir = -XM_PI / 2;
 	}
-	if (GetKeyboardPress(DIK_W))
+	if (GetKeyboardPress(DIK_W) || IsButtonPressed(0, BUTTON_UP))
 	{
 		g_Player.spd = VALUE_MOVE;
 		g_Player.pos.z += g_Player.spd;
 		g_Player.dir = XM_PI;
 	}
-	if (GetKeyboardPress(DIK_S))
+	if (GetKeyboardPress(DIK_S) || IsButtonPressed(0, BUTTON_DOWN))
 	{
 		g_Player.spd = VALUE_MOVE;
 		g_Player.pos.z -= g_Player.spd;
@@ -273,6 +276,8 @@ void DrawPlayer(void)
 
 	XMStoreFloat4x4(&g_Player.mtxWorld, mtxWorld);
 
+	// 縁取りの設定
+	SetFuchi(0);
 
 	// モデル描画
 	DrawModel(&g_Player.model);

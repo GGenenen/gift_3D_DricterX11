@@ -38,7 +38,7 @@
 // グローバル変数:
 //*****************************************************************************
 
-int Mode = MODE_GAME;
+int Mode = MODE_TITLE;
 
 int GameMode = GMODE_GAME;
 
@@ -97,6 +97,7 @@ void InitGame(void)
 //=============================================================================
 void UninitGame(void)
 {
+
 	// ビルドの終了処理
 	UninitBuild();
 
@@ -162,6 +163,8 @@ void UpdateGame(void)
 		//UpdateTree();
 		// 弾の更新処理
 		UpdateBullet();
+
+		UpdateLight();
 		// 影の更新処理
 		UpdateShadow();
 		// 当たり判定
