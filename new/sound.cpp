@@ -34,8 +34,8 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
 	//-----------------BGM-----------------------
-	{ (char*)"data/BGM/title.wav", -1 },	// BGM0
-	{ (char*)"data/BGM/mura.wav", -1 },		// BGM1
+	{ (char*)"data/BGM/Take_it_easy.wav", -1 },	// BGM0
+	{ (char*)"data/BGM/Lonely_Merry_Christmas.wav", -1 },		// BGM1
 	{ (char*)"data/BGM/satogai.wav", -1 },	// BGM2
 	{ (char*)"data/BGM/battle1.wav", -1 },	// BGM3
 	{ (char*)"data/BGM/battle2.wav", -1 },	// BGM4
@@ -231,11 +231,11 @@ void UninitSound(void)
 
 void PlaySound(int label)
 {
-#if _DEBUG&&TRUE
-
-		return;
-
-#endif // _DEBUG&&TRUE
+//#if _DEBUG&&TRUE
+//
+//		return;
+//
+//#endif // _DEBUG&&TRUE
 
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;

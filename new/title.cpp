@@ -286,7 +286,7 @@ void DrawTitle(void)
 //		// ƒ|ƒŠƒSƒ“•`‰æ
 //		GetDeviceContext()->Draw(4, 0);
 //	}
-//}
+}
 
 
 

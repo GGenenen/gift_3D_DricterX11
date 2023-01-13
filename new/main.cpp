@@ -95,20 +95,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// DirectXの初期化(ウィンドウを作成してから行う)
 	bool mode = true;
 
-	//int id = MessageBox(NULL, "Windowモードでプレイしますか？", "起動モード", MB_YESNOCANCEL | MB_ICONQUESTION);
-	//switch (id)
-	//{	 
-	//case IDYES:		// YesならWindowモードで起動
-	//	mode = true;
-	//	break;
-	//case IDNO:		// Noならフルスクリーンモードで起動
-	//	mode = false;
-	//	break;
-	//case IDCANCEL:	// CANCELなら終了
-	//default:
-	//	return -1;
-	//	break;
-	//}
+	int id = MessageBox(NULL, "Windowモードでプレイしますか？", "起動モード", MB_YESNOCANCEL | MB_ICONQUESTION);
+	switch (id)
+	{	 
+	case IDYES:		// YesならWindowモードで起動
+		mode = true;
+		break;
+	case IDNO:		// Noならフルスクリーンモードで起動
+		mode = false;
+		break;
+	case IDCANCEL:	// CANCELなら終了
+	default:
+		return -1;
+		break;
+	}
 
 	// DirectXの初期化(ウィンドウを作成してから行う)
 	if (FAILED(Init(hInstance, hWnd, mode)))

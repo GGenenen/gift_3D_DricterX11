@@ -20,7 +20,7 @@
 //*****************************************************************************
 #define	MODEL_PLAYER		"data/MODEL/player.obj"			// “Ç‚İ‚Şƒ‚ƒfƒ‹–¼
 
-#define	VALUE_MOVE			(2.0f)							// ˆÚ“®—Ê
+#define	VALUE_MOVE			(1.0f)							// ˆÚ“®—Ê
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// ‰ñ“]—Ê
 
 #define PLAYER_SHADOW_SIZE	(0.4f)							// ‰e‚Ì‘å‚«‚³

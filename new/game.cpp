@@ -265,7 +265,7 @@ void SetMode(int mode)
 		break;
 	case MODE_TUTORIAL:
 		InitTutorial();
-		PlaySound(SOUND_LABEL_BGM_1);
+		PlaySound(SOUND_LABEL_BGM_0);
 		break;
 	case MODE_GAME:
 		// ライトの初期化
@@ -308,11 +308,11 @@ void SetMode(int mode)
 		//	g_LoadGame = FALSE;		// ロードしたからフラグをClearする
 		//}
 
-		PlaySound(SOUND_LABEL_BGM_2);
+		PlaySound(SOUND_LABEL_BGM_1);
 		break;
 	case MODE_RESULT:
 		InitResult();
-		PlaySound(SOUND_LABEL_BGM_3);
+		PlaySound(SOUND_LABEL_BGM_0);
 		break;
 	}
 
