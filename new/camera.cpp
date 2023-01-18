@@ -83,144 +83,151 @@ void UninitCamera(void)
 void UpdateCamera(void)
 {
 
-	if (GetKeyboardPress(DIK_Z))
-	{// 視点旋回「左」
-		g_Camera.rot.y += VALUE_ROTATE_CAMERA;
-		if (g_Camera.rot.y > XM_PI)
-		{
-			g_Camera.rot.y -= XM_PI * 2.0f;
+	if (GetMode() == MODE_GAME)
+	{
+		if (GetKeyboardPress(DIK_Z))
+		{// 視点旋回「左」
+			g_Camera.rot.y += VALUE_ROTATE_CAMERA;
+			if (g_Camera.rot.y > XM_PI)
+			{
+				g_Camera.rot.y -= XM_PI * 2.0f;
+			}
+
+			g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
 		}
 
-		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	}
+		if (GetKeyboardPress(DIK_C))
+		{// 視点旋回「右」
+			g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
+			if (g_Camera.rot.y < -XM_PI)
+			{
+				g_Camera.rot.y += XM_PI * 2.0f;
+			}
 
-	if (GetKeyboardPress(DIK_C))
-	{// 視点旋回「右」
-		g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
-		if (g_Camera.rot.y < -XM_PI)
-		{
-			g_Camera.rot.y += XM_PI * 2.0f;
+			g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
 		}
 
-		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	}
-
-	if (GetKeyboardPress(DIK_Y))
-	{// 視点移動「上」
-		g_Camera.pos.y += VALUE_MOVE_CAMERA;
-	}
-
-	if (GetKeyboardPress(DIK_N))
-	{// 視点移動「下」
-		g_Camera.pos.y -= VALUE_MOVE_CAMERA;
-	}
-
-
-
-
-	if (GetKeyboardPress(DIK_LEFT) || IsButtonPressed(0, BUTTON_R_LEFT))
-	{// 注視点旋回「左」
-		g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
-		if (g_Camera.rot.y < -XM_PI)
-		{
-			g_Camera.rot.y += XM_PI * 2.0f;
+		if (GetKeyboardPress(DIK_Y))
+		{// 視点移動「上」
+			g_Camera.pos.y += VALUE_MOVE_CAMERA;
 		}
 
-		g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
-	}
-
-	if (GetKeyboardPress(DIK_RIGHT) || IsButtonPressed(0, BUTTON_R_RIGHT))
-	{// 注視点旋回「右」
-		g_Camera.rot.y += VALUE_ROTATE_CAMERA;
-		if (g_Camera.rot.y > XM_PI)
-		{
-			g_Camera.rot.y -= XM_PI * 2.0f;
+		if (GetKeyboardPress(DIK_N))
+		{// 視点移動「下」
+			g_Camera.pos.y -= VALUE_MOVE_CAMERA;
 		}
 
-		g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
-	}
 
-	//if (GetKeyboardPress(DIK_UP))
-	//{// 注視点移動「上」
-	//	g_Camera.at.y += VALUE_MOVE_CAMERA;
-	//}
 
-	//if (GetKeyboardPress(DIK_DOWN))
-	//{// 注視点移動「下」
-	//	g_Camera.at.y -= VALUE_MOVE_CAMERA;
-	//}
 
-	if (GetKeyboardPress(DIK_U))
-	{// 近づく
-		g_Camera.len -= VALUE_MOVE_CAMERA;
-		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	}
+		if (GetKeyboardPress(DIK_LEFT) || IsButtonPressed(0, BUTTON_R_LEFT))
+		{// 注視点旋回「左」
+			g_Camera.rot.y -= VALUE_ROTATE_CAMERA;
+			if (g_Camera.rot.y < -XM_PI)
+			{
+				g_Camera.rot.y += XM_PI * 2.0f;
+			}
 
-	if (GetKeyboardPress(DIK_M))
-	{// 離れる
-		g_Camera.len += VALUE_MOVE_CAMERA;
-		g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
-		g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
-	}
+			g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
+		}
+
+		if (GetKeyboardPress(DIK_RIGHT) || IsButtonPressed(0, BUTTON_R_RIGHT))
+		{// 注視点旋回「右」
+			g_Camera.rot.y += VALUE_ROTATE_CAMERA;
+			if (g_Camera.rot.y > XM_PI)
+			{
+				g_Camera.rot.y -= XM_PI * 2.0f;
+			}
+
+			g_Camera.at.x = g_Camera.pos.x + sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.at.z = g_Camera.pos.z + cosf(g_Camera.rot.y) * g_Camera.len;
+		}
+
+		//if (GetKeyboardPress(DIK_UP))
+		//{// 注視点移動「上」
+		//	g_Camera.at.y += VALUE_MOVE_CAMERA;
+		//}
+
+		//if (GetKeyboardPress(DIK_DOWN))
+		//{// 注視点移動「下」
+		//	g_Camera.at.y -= VALUE_MOVE_CAMERA;
+		//}
+
+		if (GetKeyboardPress(DIK_U))
+		{// 近づく
+			g_Camera.len -= VALUE_MOVE_CAMERA;
+			g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+		}
+
+		if (GetKeyboardPress(DIK_M))
+		{// 離れる
+			g_Camera.len += VALUE_MOVE_CAMERA;
+			g_Camera.pos.x = g_Camera.at.x - sinf(g_Camera.rot.y) * g_Camera.len;
+			g_Camera.pos.z = g_Camera.at.z - cosf(g_Camera.rot.y) * g_Camera.len;
+		}
 
 #ifdef _DEBUG
-	// カメラを初期に戻す
-	if (GetKeyboardPress(DIK_R))
-	{
-		UninitCamera();
-		InitCamera();
-	}
+		// カメラを初期に戻す
+		if (GetKeyboardPress(DIK_R))
+		{
+			UninitCamera();
+			InitCamera();
+		}
 #endif
 
 
 
 #ifdef _DEBUG	// デバッグ情報を表示する
-	PrintDebugProc("Camera:ZC QE TB YN UM\n");
+		PrintDebugProc("Camera:ZC QE TB YN UM\n");
 #endif
+
 
 
 
 #ifdef _DEBUG
-	if (GetKeyboardTrigger(DIK_F3))
-	{
-		//人称フラグ true:三人称 false:一人称
-		ViewType = ViewType ? false : true;
-	}
+		if (GetKeyboardTrigger(DIK_F3))
+		{
+			//人称フラグ true:三人称 false:一人称
+			ViewType = ViewType ? false : true;
+		}
 #endif
 
-	if (ViewType)
-	{
-		//三人称
-		g_Camera.pos.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y) * ThirdPerson.x;
-		g_Camera.pos.y = GetPlayer()->pos.y + ThirdPerson.y;
-		g_Camera.pos.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y) * ThirdPerson.z;
-	}
-	else
-	{
-		//一人称　DirectXの軸→カメラが前だから,+ XM_PI
-		g_Camera.pos.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y + XM_PI) * OnePerson.x;
-		g_Camera.pos.y = GetPlayer()->pos.y + OnePerson.y;
-		g_Camera.pos.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y + XM_PI) * OnePerson.z;
-	}
+		if (ViewType)
+		{
+			//三人称
+			g_Camera.pos.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y) * ThirdPerson.x;
+			g_Camera.pos.y = GetPlayer()->pos.y + ThirdPerson.y;
+			g_Camera.pos.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y) * ThirdPerson.z;
+		}
+		else
+		{
+			//一人称　DirectXの軸→カメラが前だから,+ XM_PI
+			g_Camera.pos.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y + XM_PI) * OnePerson.x;
+			g_Camera.pos.y = GetPlayer()->pos.y + OnePerson.y;
+			g_Camera.pos.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y + XM_PI) * OnePerson.z;
+		}
 
-	//DirectXの軸→注視点が前だから, +XM_PI
-	g_Camera.at.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y + XM_PI) * g_Camera.len;
-	g_Camera.at.y = GetPlayer()->pos.y - sinf(g_Camera_at_rot) * g_Camera.len;
-	g_Camera.at.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y + XM_PI) * g_Camera.len;
 
-	SetCamera();
 
-	//カーソルを中心に設定
-	//SetCursorPos(SCREEN_CENTER_X, SCREEN_CENTER_Y);
+
+		//DirectXの軸→注視点が前だから, +XM_PI
+		g_Camera.at.x = GetPlayer()->pos.x - sinf(g_Camera.rot.y + XM_PI) * g_Camera.len;
+		g_Camera.at.y = GetPlayer()->pos.y - sinf(g_Camera_at_rot) * g_Camera.len;
+		g_Camera.at.z = GetPlayer()->pos.z - cosf(g_Camera.rot.y + XM_PI) * g_Camera.len;
+
+		SetCamera();
+
+		//カーソルを中心に設定
+		//SetCursorPos(SCREEN_CENTER_X, SCREEN_CENTER_Y);
 
 #ifdef _DEBUG
 
 #endif
+	}
 }
 
 
@@ -343,3 +350,9 @@ void SetCameraAT(XMFLOAT3 pos)
 
 }
 
+void SetCameraPOS(XMFLOAT3 pos)
+{
+
+	g_Camera.pos = pos;
+
+}

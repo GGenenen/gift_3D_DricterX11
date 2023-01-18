@@ -31,7 +31,7 @@ static ID3D11Buffer* g_VertexBuffer = NULL;				// 頂点情報
 static ID3D11ShaderResourceView* g_Texture[TEXTURE_MAX] = { NULL };	// テクスチャ情報
 
 static char* g_TexturName[TEXTURE_MAX] = {
-	"data/TEXTURE/BG.png",//0
+	"data/TEXTURE/title.png",//0
 	//"data/TEXTURE/bg03.png",//1
 	//"data/TEXTURE/bg02.png",//2
 	//"data/TEXTURE/newgame.png",//3
@@ -211,34 +211,35 @@ void DrawTitle(void)
 		// ポリゴン描画
 		GetDeviceContext()->Draw(4, 0);
 	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Title[1].pos.x, g_Title[1].pos.y, g_Title[1].w, g_Title[1].h,
-			g_Title[1].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
-	// タイトルの背景を描画
-	{
-		// テクスチャ設定
-		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Title[1].pos.x, g_Title[1].pos.y, g_Title[1].w, g_Title[1].h,
+	//		g_Title[1].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		// １枚のポリゴンの頂点とテクスチャ座標を設定
-		SetSpriteColor(g_VertexBuffer,
-			g_Title[2].pos.x, g_Title[2].pos.y, g_Title[2].w, g_Title[2].h,
-			g_Title[2].scrl, 0.0f, 1.0f, 1.0f,
-			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
+	//// タイトルの背景を描画
+	//{
+	//	// テクスチャ設定
+	//	GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
 
-		// ポリゴン描画
-		GetDeviceContext()->Draw(4, 0);
-	}
+	//	// １枚のポリゴンの頂点とテクスチャ座標を設定
+	//	SetSpriteColor(g_VertexBuffer,
+	//		g_Title[2].pos.x, g_Title[2].pos.y, g_Title[2].w, g_Title[2].h,
+	//		g_Title[2].scrl, 0.0f, 1.0f, 1.0f,
+	//		XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+	//	// ポリゴン描画
+	//	GetDeviceContext()->Draw(4, 0);
+	//}
 
 	//switch (checkmode)
 	//{

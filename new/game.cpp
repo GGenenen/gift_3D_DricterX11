@@ -44,6 +44,9 @@ int GameMode = GMODE_GAME;
 
 BOOL g_LoadGame = FALSE;					// NewGame
 
+//static CAMERA				g_Camera;						// プレイヤー
+
+
 //=============================================================================
 // 初期化処理
 //=============================================================================
@@ -143,6 +146,10 @@ void UpdateGame(void)
 	case MODE_TITLE:
 		// タイトルの更新
 		UpdateTitle();
+		UpdateBuild();
+		UpdateEnemy();
+
+
 		break;
 	case MODE_TUTORIAL:
 		// チュートーリアルの更新
@@ -159,8 +166,6 @@ void UpdateGame(void)
 		UpdatePlayer();
 		// エネミーの更新処理
 		UpdateEnemy();
-		// 木の更新処理
-		//UpdateTree();
 		// 弾の更新処理
 		UpdateBullet();
 
@@ -186,8 +191,26 @@ void UpdateGame(void)
 //=============================================================================
 void DrawGame(void)
 {
+	CAMERA* g_Camera = GetCamera();
+	XMFLOAT3 newpos = XMFLOAT3(500.0f, 15.0f, -850.0f);
+	XMFLOAT3 newposAT = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+
 	switch (Mode)
 	{
+	case MODE_TITLE:
+
+		SetFogEnable(0);
+		//SetCameraAT(newposAT);
+		SetCameraPOS(newpos);
+
+		DrawBuild();
+		DrawEnemy();
+
+
+		break;
+
+
 	case MODE_GAME:
 		// 地面の描画処理
 		//DrawMeshField();
@@ -205,6 +228,7 @@ void DrawGame(void)
 		// 木の描画処理
 		//DrawTree();
 		break;
+
 	}
 
 
@@ -220,6 +244,7 @@ void DrawGame(void)
 		case MODE_TITLE:
 			// タイトルの描画処理
 			DrawTitle();
+
 			break;
 		case MODE_TUTORIAL:
 			// チュートーリアルの描画処理
@@ -261,6 +286,10 @@ void SetMode(int mode)
 	{
 	case MODE_TITLE:
 		InitTitle();
+		InitBuild();
+		InitEnemy();
+
+
 		PlaySound(SOUND_LABEL_BGM_0);
 		break;
 	case MODE_TUTORIAL:
