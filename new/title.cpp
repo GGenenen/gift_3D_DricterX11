@@ -150,19 +150,19 @@ void UpdateTitle(void)
 		SetFade(FADE_OUT, MODE_TUTORIAL);
 		PlaySound(SOUND_LABEL_SE_button);
 
-	//	switch (checkmode)
-	//	{
-	//	case 0:
-	//		SetFade(FADE_OUT, MODE_TUTORIAL);
-	//		break;
-	//	//case 1:
-	//	//	//SetLoadGame(TRUE);
-	//	//	SetFade(FADE_OUT, MODE_TUTORIAL);
-	//	//	break;
-	//	case 1:
-	//		exit(0);
-	//		break;
-	//	}
+		switch (checkmode)
+		{
+		case 0:
+			SetFade(FADE_OUT, MODE_TUTORIAL);
+			break;
+		case 1:
+			//SetLoadGame(TRUE);
+			SetFade(FADE_OUT, MODE_TUTORIAL);
+			break;
+		case 2:
+			exit(0);
+			break;
+		}
 	}
 
 
