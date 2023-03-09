@@ -127,7 +127,7 @@ void UpdateLight(void)
 {
 
 
-	if (GetKeyboardTrigger(DIK_F))
+	if (GetKeyboardTrigger(DIK_F) || IsButtonTriggered(0, BUTTON_B))
 	{
 		//g_FogEnable=g_FogEnable ? true : false;
 		g_FogEnable = !g_FogEnable;

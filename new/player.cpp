@@ -111,7 +111,7 @@ void UpdatePlayer(void)
 	CAMERA* cam = GetCamera();
 
 	g_Player.repos = g_Player.pos;
-	g_Player.spd *= 0.9f;
+	g_Player.spd *= 0.8f;
 
 	// 移動処理
 
@@ -186,7 +186,7 @@ void UpdatePlayer(void)
 
 
 	// 弾発射処理
-	if (GetKeyboardTrigger(DIK_SPACE))
+	if (GetKeyboardTrigger(DIK_SPACE) || IsButtonTriggered(0, BUTTON_A))
 	{
 		g_Player.dir = XM_PI;
 		//g_Player.dir = g_Camera.rot.y;
@@ -200,7 +200,7 @@ void UpdatePlayer(void)
 	SetPositionShadow(g_Player.shadowIdx, pos);
 
 
-	g_Player.spd *= 0.8f;
+	g_Player.spd *= 1.0f;
 
 
 	//{	// ポイントライトのテスト

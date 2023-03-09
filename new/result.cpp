@@ -128,7 +128,7 @@ void UpdateResult(void)
 		SetFade(FADE_OUT, MODE_TITLE);
 	}
 	
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) || IsButtonPressed(0, BUTTON_A))
 	{
 		SetFade(FADE_OUT, MODE_TITLE);
 	}

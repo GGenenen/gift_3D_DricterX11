@@ -147,6 +147,16 @@ void UpdateBullet(void)
 		currentBulletModelType = BULLET_MODEL_TYPE_4;
 	}
 	
+
+	if (IsButtonPressed(0, BUTTON_R))
+	{
+		currentBulletModelType = BULLET_MODEL_TYPE_1+1;
+
+
+	}
+
+
+
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
 		//// Key“ü—Í‚ª‚ ‚Á‚½‚çˆÚ“®ˆ—‚·‚é
